@@ -90,43 +90,39 @@ export function MenuSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader eyebrow="The Menu" title="Made Fresh, Served Hot" />
 
-        <div className="mt-10 grid lg:grid-cols-[260px_1fr] gap-8">
-          {/* Sidebar / tabs */}
-          <aside className="lg:sticky lg:top-24 self-start">
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search the menu…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="pl-9 bg-card"
-              />
-            </div>
-            <div className="relative">
-              <div className="flex flex-wrap lg:flex-col gap-2 pb-1 lg:pb-0">
-                {TAB_ORDER.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    onClick={() => handleSelect(c)}
-                    className={cn(
-                      "whitespace-nowrap text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
-                      active === c && !searchActive
-                        ? "bg-primary text-primary-foreground border-primary shadow-warm"
-                        : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
-                    )}
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-              <div className="pointer-events-none absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent lg:hidden" />
-            </div>
-          </aside>
+        <div className="mt-10 space-y-6">
+          {/* Search */}
+          <div className="relative max-w-md mx-auto">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search the menu…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="pl-9 bg-card"
+            />
+          </div>
+
+          {/* Category tabs — wrap on all breakpoints */}
+          <div className="flex flex-wrap justify-center gap-2">
+            {TAB_ORDER.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => handleSelect(c)}
+                className={cn(
+                  "whitespace-nowrap px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
+                  active === c && !searchActive
+                    ? "bg-primary text-primary-foreground border-primary shadow-warm"
+                    : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
+                )}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
 
           {/* Content */}
-          <div ref={contentRef} className="space-y-12 scroll-mt-20">
-
+          <div ref={contentRef} className="space-y-12 scroll-mt-20 pt-4">
             {searchActive ? (
               <SearchResults
                 cats={searchResults!.cats}
