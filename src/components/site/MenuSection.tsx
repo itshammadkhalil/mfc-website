@@ -107,10 +107,8 @@ export function MenuSection() {
                 {TAB_ORDER.map((c) => (
                   <button
                     key={c}
-                    onClick={() => {
-                      setQuery("");
-                      setActive(c);
-                    }}
+                    type="button"
+                    onClick={() => handleSelect(c)}
                     className={cn(
                       "whitespace-nowrap text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
                       active === c && !searchActive
