@@ -164,11 +164,11 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
         <h3 className="font-display text-3xl sm:text-4xl text-foreground">Deals & Offers</h3>
       </div>
-      <div className="mb-4 flex flex-wrap gap-2">
+      <ChipRow>
         {DEAL_CHIPS.map((c) => (
           <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
         ))}
-      </div>
+      </ChipRow>
       {note && <p className="mb-5 text-sm text-secondary font-medium italic">{note}</p>}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((deal) => (
