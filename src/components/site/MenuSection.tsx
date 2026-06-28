@@ -9,7 +9,7 @@ import {
   type MenuCategory,
   type DealItem,
 } from "@/data/menu";
-import { getCategoryIcon, FALLBACK_IMAGE } from "@/data/menu-images";
+import { getCategoryIcon, getPizzaImage, FALLBACK_IMAGE } from "@/data/menu-images";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
