@@ -159,7 +159,7 @@ function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string
           <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
         ))}
       </ChipRow>
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {items.map((item, i) => (
           <ItemCard
             key={(item.type ?? "") + item.name}
@@ -193,7 +193,7 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
         ))}
       </ChipRow>
       {note && <p className="mb-5 text-sm text-secondary font-medium italic">{note}</p>}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {items.map((deal) => (
           <DealCard
             key={deal.type + deal.name}
@@ -260,7 +260,7 @@ function SearchResults({
           <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
             <h3 className="font-display text-3xl sm:text-4xl text-foreground">Deals</h3>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {deals.map((d) => (
               <DealCard
                 key={d.type + d.name}
@@ -309,7 +309,7 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
         </p>
       )}
       {cat.note && <p className="text-xs text-muted-foreground mb-4 italic">{cat.note}</p>}
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {cat.items.map((item) => (
           <ItemCard
             key={cat.category + item.name}
