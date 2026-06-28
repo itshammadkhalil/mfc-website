@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Minus, Plus, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,24 +73,27 @@ export function MenuSection() {
                 className="pl-9 bg-card"
               />
             </div>
-            <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 -mx-1 px-1">
-              {TAB_ORDER.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => {
-                    setQuery("");
-                    setActive(c);
-                  }}
-                  className={cn(
-                    "shrink-0 lg:shrink whitespace-nowrap text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-all border",
-                    active === c && !searchActive
-                      ? "bg-primary text-primary-foreground border-primary shadow-warm"
-                      : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
-                  )}
-                >
-                  {c}
-                </button>
-              ))}
+            <div className="relative -mx-1">
+              <div className="no-scrollbar flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 px-1 snap-x">
+                {TAB_ORDER.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => {
+                      setQuery("");
+                      setActive(c);
+                    }}
+                    className={cn(
+                      "shrink-0 lg:shrink whitespace-nowrap snap-start text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
+                      active === c && !searchActive
+                        ? "bg-primary text-primary-foreground border-primary shadow-warm"
+                        : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
+                    )}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+              <div className="pointer-events-none absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent lg:hidden" />
             </div>
           </aside>
 
@@ -128,11 +131,11 @@ function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
         <h3 className="font-display text-3xl sm:text-4xl text-foreground">Pizza</h3>
       </div>
-      <div className="mb-6 flex flex-wrap gap-2">
+      <ChipRow>
         {PIZZA_CHIPS.map((c) => (
           <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
         ))}
-      </div>
+      </ChipRow>
       <div className="grid sm:grid-cols-2 gap-4">
         {items.map((item) => (
           <ItemCard
@@ -161,11 +164,11 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
         <h3 className="font-display text-3xl sm:text-4xl text-foreground">Deals & Offers</h3>
       </div>
-      <div className="mb-4 flex flex-wrap gap-2">
+      <ChipRow>
         {DEAL_CHIPS.map((c) => (
           <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
         ))}
-      </div>
+      </ChipRow>
       {note && <p className="mb-5 text-sm text-secondary font-medium italic">{note}</p>}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((deal) => (
@@ -298,12 +301,23 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
 }
 
 // ---------- Shared image / chip ----------
+function ChipRow({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative -mx-4 sm:mx-0 mb-5">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 sm:px-0 sm:flex-wrap pb-1">
+        {children}
+      </div>
+      <div className="pointer-events-none absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent sm:hidden" />
+    </div>
+  );
+}
+
 function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all",
+        "shrink-0 whitespace-nowrap px-3 py-1.5 sm:px-3.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all",
         active
           ? "bg-secondary text-secondary-foreground border-secondary shadow-warm"
           : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
@@ -319,7 +333,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
   const [src, setSrc] = useState(image);
   const [didFallback, setDidFallback] = useState(false);
   return (
-    <div className="relative h-[180px] w-full overflow-hidden bg-gradient-to-br from-secondary/10 to-primary/5">
+    <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-br from-secondary/10 to-primary/5">
       {!loaded && <div className="absolute inset-0 animate-pulse bg-muted/40" />}
       <img
         src={src}
@@ -334,7 +348,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
           setLoaded(true);
         }}
         className={cn(
-          "h-full w-full object-contain p-4 transition-all duration-500 group-hover:scale-105",
+          "h-full w-full object-contain p-3 transition-all duration-500 group-hover:scale-105",
           loaded ? "opacity-100" : "opacity-0",
         )}
       />
