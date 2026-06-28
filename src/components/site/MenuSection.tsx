@@ -397,104 +397,220 @@ function ItemCard({
 }) {
   const validIndices = item.prices.map((p, i) => (p == null ? -1 : i)).filter((i) => i >= 0);
   const initial = validIndices[0] ?? 0;
-  const [sizeIdx, setSizeIdx] = useState(initial);
-  const [qty, setQty] = useState(1);
   const { addItem } = useCart();
+  const [open, setOpen] = useState(false);
+  const [qty, setQty] = useState(1);
 
-  const price = item.prices[sizeIdx];
-  const size = item.sizes[sizeIdx];
-  const hasOptions = item.sizes.length > 1;
-  const disabled = price == null;
+  const validPrices = item.prices.filter((p): p is number => p != null);
+  const minPrice = validPrices.length ? Math.min(...validPrices) : null;
+  const hasOptions = validIndices.length > 1;
+  const onlySize = item.sizes[initial];
+  const showSizeInName = onlySize && onlySize !== "Standard";
 
-  const onAdd = () => {
-    if (price == null) {
+  const onDirectAdd = () => {
+    if (minPrice == null) {
       toast.error("Price not available — please call to order.");
       return;
     }
     addItem({
+      id: `${category}::${item.type ?? ""}::${item.name}::${onlySize}`,
+      name: item.name,
+      size: showSizeInName ? onlySize : undefined,
+      unitPrice: item.prices[initial]!,
+      quantity: 1,
+      category: item.type ? `${category} — ${item.type}` : category,
+    });
+    toast.success(`Added ${item.name}`);
+  };
+
+  const onClickAdd = () => {
+    if (hasOptions) {
+      setQty(1);
+      setOpen(true);
+    } else {
+      onDirectAdd();
+    }
+  };
+
+  return (
+    <>
+      <div className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
+        <CardImage image={image} alt={item.name} />
+        <div className="flex flex-1 flex-col p-3 sm:p-4">
+          {badge && (
+            <span className="inline-block self-start mb-1 px-1.5 py-0.5 rounded-full bg-secondary/15 text-secondary text-[9px] font-bold uppercase tracking-wider">
+              {badge}
+            </span>
+          )}
+          <h4 className="font-semibold text-sm sm:text-base text-foreground leading-snug line-clamp-2">
+            {item.name}
+          </h4>
+          <div className="mt-2 flex-1" />
+          <div className="mt-2 flex items-end justify-between gap-2">
+            <div className="min-w-0">
+              {hasOptions && (
+                <div className="text-[10px] uppercase tracking-wider text-muted-foreground">From</div>
+              )}
+              <span className="font-display text-base sm:text-lg text-primary">
+                {minPrice != null ? formatPKR(minPrice) : "—"}
+              </span>
+            </div>
+            <Button
+              onClick={onClickAdd}
+              disabled={minPrice == null}
+              size="sm"
+              className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Add
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {hasOptions && (
+        <ItemOptionsDialog
+          open={open}
+          onOpenChange={setOpen}
+          category={category}
+          item={item}
+          image={image}
+          badge={badge}
+          qty={qty}
+          setQty={setQty}
+        />
+      )}
+    </>
+  );
+}
+
+function ItemOptionsDialog({
+  open,
+  onOpenChange,
+  category,
+  item,
+  image,
+  badge,
+  qty,
+  setQty,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  category: string;
+  item: MenuItem;
+  image: string;
+  badge?: string;
+  qty: number;
+  setQty: (updater: (q: number) => number) => void;
+}) {
+  const validIndices = item.prices.map((p, i) => (p == null ? -1 : i)).filter((i) => i >= 0);
+  const [sizeIdx, setSizeIdx] = useState(validIndices[0] ?? 0);
+  const { addItem } = useCart();
+
+  useEffect(() => {
+    if (open) setSizeIdx(validIndices[0] ?? 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  const price = item.prices[sizeIdx];
+  const size = item.sizes[sizeIdx];
+  const total = price != null ? price * qty : null;
+
+  const onConfirm = () => {
+    if (price == null) return;
+    addItem({
       id: `${category}::${item.type ?? ""}::${item.name}::${size}`,
       name: item.name,
-      size: hasOptions || item.sizes[0] !== "Standard" ? size : undefined,
+      size,
       unitPrice: price,
       quantity: qty,
       category: item.type ? `${category} — ${item.type}` : category,
     });
-    toast.success(`Added ${qty} × ${item.name}`);
-    setQty(1);
+    toast.success(`Added ${qty} × ${item.name} (${size})`);
+    onOpenChange(false);
   };
 
   return (
-    <div className="group overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
-      <CardImage image={image} alt={item.name} />
-      <div className="p-3 sm:p-4">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+        <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
+          <img src={image} alt={item.name} className="h-full w-full object-cover" />
+        </div>
+        <div className="p-5">
+          <DialogHeader className="text-left">
             {badge && (
-              <span className="inline-block mb-1 px-1.5 py-0.5 rounded-full bg-secondary/15 text-secondary text-[9px] font-bold uppercase tracking-wider">
+              <span className="inline-block self-start mb-1 px-2 py-0.5 rounded-full bg-secondary/15 text-secondary text-[10px] font-bold uppercase tracking-wider">
                 {badge}
               </span>
             )}
-            <h4 className="font-semibold text-sm sm:text-base text-foreground leading-snug line-clamp-2">{item.name}</h4>
-          </div>
-          <span className="shrink-0 font-display text-base sm:text-lg text-primary">
-            {price != null ? formatPKR(price) : "—"}
-          </span>
-        </div>
+            <DialogTitle className="font-display text-2xl text-foreground">{item.name}</DialogTitle>
+          </DialogHeader>
 
-        {hasOptions && (
-          <div className="mt-2.5 flex flex-wrap gap-1">
-            {item.sizes.map((s, i) => {
-              const p = item.prices[i];
-              if (p == null) return null;
-              return (
-                <button
-                  key={s}
-                  onClick={() => setSizeIdx(i)}
-                  className={cn(
-                    "px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-medium border transition-colors",
-                    sizeIdx === i
-                      ? "bg-secondary text-secondary-foreground border-secondary"
-                      : "bg-background text-foreground/70 border-border hover:border-primary/40",
-                  )}
-                >
-                  {s}
-                </button>
-              );
-            })}
+          <div className="mt-4">
+            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+              Choose size
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {item.sizes.map((s, i) => {
+                const p = item.prices[i];
+                if (p == null) return null;
+                const active = sizeIdx === i;
+                return (
+                  <button
+                    key={s}
+                    onClick={() => setSizeIdx(i)}
+                    className={cn(
+                      "flex items-center justify-between rounded-lg border px-3 py-2.5 text-sm transition-colors",
+                      active
+                        ? "bg-secondary text-secondary-foreground border-secondary shadow-warm"
+                        : "bg-card text-foreground border-border hover:border-primary/40",
+                    )}
+                  >
+                    <span className="font-semibold">{s}</span>
+                    <span className={cn("text-xs", active ? "opacity-90" : "text-muted-foreground")}>
+                      {formatPKR(p)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        )}
 
-        <div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex items-center rounded-md border border-border">
-            <button
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-              className="grid h-7 w-7 place-items-center text-muted-foreground hover:text-primary"
-              aria-label="Decrease"
-            >
-              <Minus className="h-3 w-3" />
-            </button>
-            <span className="w-6 text-center text-xs font-semibold">{qty}</span>
-            <button
-              onClick={() => setQty((q) => q + 1)}
-              className="grid h-7 w-7 place-items-center text-muted-foreground hover:text-primary"
-              aria-label="Increase"
-            >
-              <Plus className="h-3 w-3" />
-            </button>
+          <div className="mt-5 flex items-center justify-between gap-3">
+            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Quantity
+            </div>
+            <div className="flex items-center rounded-lg border border-border">
+              <button
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="grid h-9 w-9 place-items-center text-muted-foreground hover:text-primary"
+                aria-label="Decrease"
+              >
+                <Minus className="h-4 w-4" />
+              </button>
+              <span className="w-8 text-center text-sm font-semibold">{qty}</span>
+              <button
+                onClick={() => setQty((q) => q + 1)}
+                className="grid h-9 w-9 place-items-center text-muted-foreground hover:text-primary"
+                aria-label="Increase"
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+            </div>
           </div>
+
           <Button
-            onClick={onAdd}
-            disabled={disabled}
-            size="sm"
-            className="h-8 px-2.5 text-xs bg-primary hover:bg-primary/90 text-primary-foreground"
+            onClick={onConfirm}
+            disabled={price == null}
+            className="mt-5 w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground"
           >
-            Add
+            Add to Cart{total != null ? ` — ${formatPKR(total)}` : ""}
           </Button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
+
 
 
 export function SectionHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
