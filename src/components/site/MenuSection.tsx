@@ -301,12 +301,23 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
 }
 
 // ---------- Shared image / chip ----------
+function ChipRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative -mx-4 sm:mx-0 mb-5">
+      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 sm:px-0 sm:flex-wrap pb-1">
+        {children}
+      </div>
+      <div className="pointer-events-none absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent sm:hidden" />
+    </div>
+  );
+}
+
 function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all",
+        "shrink-0 whitespace-nowrap px-3 py-1.5 sm:px-3.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all",
         active
           ? "bg-secondary text-secondary-foreground border-secondary shadow-warm"
           : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
