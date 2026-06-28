@@ -153,7 +153,6 @@ const PIZZA_CHIPS = ["All", "Standard", "Classic", "Premium", "Special Pizzaz", 
 function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string) => void }) {
   const cat = menuCategories.find((c) => c.category === "Pizza")!;
   const items = filter === "All" ? cat.items : cat.items.filter((i) => i.type === filter);
-  const icon = getCategoryIcon("Pizza");
   return (
     <div className="animate-fade-up">
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
@@ -165,12 +164,12 @@ function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string
         ))}
       </ChipRow>
       <div className="grid sm:grid-cols-2 gap-4">
-        {items.map((item) => (
+        {items.map((item, i) => (
           <ItemCard
             key={(item.type ?? "") + item.name}
             category="Pizza"
             item={item}
-            image={icon}
+            image={getPizzaImage(i)}
             badge={item.type}
           />
         ))}
