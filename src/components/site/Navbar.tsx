@@ -3,6 +3,7 @@ import { Menu, ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
+import mfcLogo from "@/assets/mfc-logo.png";
 
 const links = [
   { href: "#home", label: "Home" },
