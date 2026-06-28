@@ -29,10 +29,8 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-all duration-300",
-        scrolled
-          ? "bg-background/95 backdrop-blur-md shadow-md border-b border-border"
-          : "bg-background/40 backdrop-blur-sm",
+        "fixed inset-x-0 top-0 z-40 transition-shadow duration-300 bg-background border-b border-border",
+        scrolled ? "shadow-md" : "shadow-sm",
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

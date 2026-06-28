@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle2, Phone } from "lucide-react";
+import { CheckCircle2, Moon, Phone } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { restaurant } from "@/data/menu";
+import { isOpenNow, CLOSED_MESSAGE } from "@/lib/hours";
 import { cn } from "@/lib/utils";
 
 type Mode = "delivery" | "takeaway" | "dinein";
@@ -29,6 +30,7 @@ export function CheckoutDialog() {
   const { checkoutOpen, setCheckoutOpen, lines, subtotal, deliveryCharge, total, clear } = useCart();
   const [mode, setMode] = useState<Mode>("delivery");
   const [confirmed, setConfirmed] = useState(false);
+  const [closedNotice, setClosedNotice] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", address: "", notes: "" });
   const [errors, setErrors] = useState<{ name?: string; phone?: string; address?: string }>({});
 
@@ -74,6 +76,10 @@ export function CheckoutDialog() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isOpenNow()) {
+      setClosedNotice(true);
+      return;
+    }
     const newErrors: typeof errors = {};
     if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.phone.trim()) newErrors.phone = "Phone number is required";
@@ -91,6 +97,7 @@ export function CheckoutDialog() {
 
   const reset = () => {
     setConfirmed(false);
+    setClosedNotice(false);
     setForm({ name: "", phone: "", address: "", notes: "" });
     setErrors({});
     setCheckoutOpen(false);
@@ -104,7 +111,22 @@ export function CheckoutDialog() {
       }}
     >
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-        {confirmed ? (
+        {closedNotice ? (
+          <div className="text-center py-4">
+            <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
+              <Moon className="h-9 w-9 text-primary" />
+            </div>
+            <DialogHeader className="mt-4">
+              <DialogTitle className="font-display text-2xl text-center">We're Closed Right Now</DialogTitle>
+              <DialogDescription className="text-center text-sm leading-relaxed pt-2">
+                {CLOSED_MESSAGE}
+              </DialogDescription>
+            </DialogHeader>
+            <Button onClick={reset} className="mt-6 w-full bg-primary hover:bg-primary/90">
+              Okay, Got It
+            </Button>
+          </div>
+        ) : confirmed ? (
           <div className="text-center py-4">
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
               <CheckCircle2 className="h-9 w-9 text-primary" />
