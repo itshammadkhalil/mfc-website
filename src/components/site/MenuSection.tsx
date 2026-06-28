@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Minus, Plus, Search, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +37,35 @@ export function MenuSection() {
   const [query, setQuery] = useState("");
   const [pizzaFilter, setPizzaFilter] = useState<string>("All");
   const [dealFilter, setDealFilter] = useState<string>("All");
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Sync from URL hash (#deals, #menu-burgers, etc.)
+  useEffect(() => {
+    const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const apply = () => {
+      const h = window.location.hash.replace(/^#/, "").toLowerCase();
+      if (!h) return;
+      const match = TAB_ORDER.find((t) => slug(t) === h || `menu-${slug(t)}` === h);
+      if (match) {
+        setActive(match);
+        setQuery("");
+        setTimeout(() => {
+          document.getElementById("menu")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 0);
+      }
+    };
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, []);
+
+  const handleSelect = (c: string) => {
+    setQuery("");
+    setActive(c);
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      setTimeout(() => contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    }
+  };
 
   const orderedCategories = useMemo(
     () => TAB_ORDER.map((t) => menuCategories.find((c) => c.category === t)).filter(Boolean) as MenuCategory[],
@@ -78,10 +107,8 @@ export function MenuSection() {
                 {TAB_ORDER.map((c) => (
                   <button
                     key={c}
-                    onClick={() => {
-                      setQuery("");
-                      setActive(c);
-                    }}
+                    type="button"
+                    onClick={() => handleSelect(c)}
                     className={cn(
                       "whitespace-nowrap text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
                       active === c && !searchActive
@@ -98,7 +125,8 @@ export function MenuSection() {
           </aside>
 
           {/* Content */}
-          <div className="space-y-12">
+          <div ref={contentRef} className="space-y-12 scroll-mt-20">
+
             {searchActive ? (
               <SearchResults
                 cats={searchResults!.cats}
