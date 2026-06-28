@@ -92,8 +92,14 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
         <p className="text-xs text-muted-foreground mb-4 italic">{cat.note}</p>
       )}
       <div className="grid sm:grid-cols-2 gap-4">
-        {cat.items.map((item) => (
-          <ItemCard key={cat.category + item.name} category={cat.category} sizes={cat.sizes} item={item} />
+        {cat.items.map((item, idx) => (
+          <ItemCard
+            key={cat.category + item.name}
+            category={cat.category}
+            sizes={cat.sizes}
+            item={item}
+            image={getMenuItemImage(cat.category, idx)}
+          />
         ))}
       </div>
     </div>
