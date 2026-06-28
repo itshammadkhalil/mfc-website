@@ -83,7 +83,7 @@ export function MenuSection() {
                       setActive(c);
                     }}
                     className={cn(
-                      "shrink-0 lg:shrink whitespace-nowrap snap-start text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
+                      "whitespace-nowrap text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
                       active === c && !searchActive
                         ? "bg-primary text-primary-foreground border-primary shadow-warm"
                         : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
