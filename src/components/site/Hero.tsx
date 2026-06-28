@@ -17,10 +17,16 @@ export function Hero() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 sm:py-32 w-full">
         <div className="max-w-3xl animate-float-in">
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-background/10 backdrop-blur px-4 py-1.5 text-xs font-medium text-accent">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-            Now Open · Air Conditioned Hall
-          </div>
+          {(() => {
+            const h = new Date().getHours();
+            const isOpen = h >= 10 || h < 2;
+            return (
+              <div className={`inline-flex items-center gap-2 rounded-full border ${isOpen ? "border-accent/40 text-accent" : "border-red-400/40 text-red-300"} bg-background/10 backdrop-blur px-4 py-1.5 text-xs font-medium`}>
+                <span className={`h-1.5 w-1.5 rounded-full ${isOpen ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
+                {isOpen ? "Open Now" : "Closed Now"}
+              </div>
+            );
+          })()}
 
           <h1 className="mt-6 font-display text-5xl sm:text-7xl lg:text-8xl text-cream leading-[0.95]">
             Miran Jee
@@ -31,15 +37,14 @@ export function Hero() {
             is talking about. Made fresh, delivered hot.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-warm h-12 px-7 text-base">
+          <div className="mt-8 flex flex-wrap gap-2">
+            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-warm h-10 px-4 text-sm rounded-md">
               <a href="#menu">View Menu</a>
             </Button>
             <Button
               asChild
-              size="lg"
               variant="outline"
-              className="h-12 px-7 text-base border-cream/40 bg-background/10 text-cream hover:bg-cream hover:text-charcoal backdrop-blur"
+              className="h-10 px-4 text-sm rounded-md border-cream/40 bg-background/10 text-cream hover:bg-cream hover:text-charcoal backdrop-blur"
             >
               <a href="#deals">Order Now</a>
             </Button>
