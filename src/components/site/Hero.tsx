@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import heroImg from "@/assets/hero-food.jpg";
+import heroImg from "@/assets/hero-option-b.jpg";
 import { isOpenNow, CLOSED_MESSAGE } from "@/lib/hours";
 
 export function Hero() {
