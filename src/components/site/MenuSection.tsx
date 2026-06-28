@@ -221,6 +221,7 @@ function ItemCard({
           Add to Cart
         </Button>
       </div>
+      </div>
     </div>
   );
 }
