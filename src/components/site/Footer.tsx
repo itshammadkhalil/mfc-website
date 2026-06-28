@@ -67,7 +67,17 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-cream/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream/60">
           <p>© {new Date().getFullYear()} MFC — Miran Jee Food Club. All rights reserved.</p>
-          <p>Crafted with love in Jahanian.</p>
+          <p>
+            Made by{" "}
+            <a
+              href="https://novastackltd.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline underline-offset-2"
+            >
+              NovaStack
+            </a>
+          </p>
         </div>
       </div>
     </footer>
