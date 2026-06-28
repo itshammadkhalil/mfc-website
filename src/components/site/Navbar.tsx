@@ -29,8 +29,10 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-shadow duration-300 bg-background border-b border-border",
-        scrolled ? "shadow-md" : "shadow-sm",
+        "fixed inset-x-0 top-0 z-40 transition-all duration-300",
+        scrolled
+          ? "bg-background/95 backdrop-blur border-b border-border shadow-md"
+          : "bg-transparent border-b border-transparent",
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -44,8 +46,22 @@ export function Navbar() {
               decoding="async"
             />
             <div className="hidden sm:block min-w-0">
-              <div className="font-display text-lg leading-none text-foreground truncate">Miran Jee</div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Food Club</div>
+              <div
+                className={cn(
+                  "font-display text-lg leading-none truncate transition-colors duration-300",
+                  scrolled ? "text-foreground" : "text-cream",
+                )}
+              >
+                Miran Jee
+              </div>
+              <div
+                className={cn(
+                  "text-[10px] uppercase tracking-[0.2em] transition-colors duration-300",
+                  scrolled ? "text-muted-foreground" : "text-cream/70",
+                )}
+              >
+                Food Club
+              </div>
             </div>
           </a>
 
@@ -54,7 +70,10 @@ export function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors relative group"
+                className={cn(
+                  "px-3 py-2 text-sm font-medium hover:text-primary transition-colors relative group",
+                  scrolled ? "text-foreground/80" : "text-cream/90",
+                )}
               >
                 {l.label}
                 <span className="absolute inset-x-3 -bottom-0.5 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
@@ -67,7 +86,12 @@ export function Navbar() {
               variant="outline"
               size="icon"
               onClick={() => setOpen(true)}
-              className="relative border-primary/30 hover:bg-primary/10"
+              className={cn(
+                "relative transition-colors duration-300",
+                scrolled
+                  ? "border-primary/30 hover:bg-primary/10 text-foreground"
+                  : "border-cream/30 bg-cream/10 text-cream hover:bg-cream/20 hover:text-cream backdrop-blur",
+              )}
               aria-label="Open cart"
             >
               <ShoppingCart className="h-4 w-4" />
@@ -80,7 +104,10 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className={cn(
+                "lg:hidden transition-colors duration-300",
+                scrolled ? "text-foreground" : "text-cream hover:bg-cream/10 hover:text-cream",
+              )}
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
             >
