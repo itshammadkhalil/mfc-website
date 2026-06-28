@@ -149,19 +149,14 @@ export function MenuSection() {
 // ---------- Pizza tab ----------
 const PIZZA_CHIPS = ["All", "Standard", "Classic", "Premium", "Special Pizzaz", "New Addition", "Mazz", "Mataka", "Steak"];
 
-function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string) => void }) {
+function PizzaTab(_: { filter: string; setFilter: (v: string) => void }) {
   const cat = menuCategories.find((c) => c.category === "Pizza")!;
-  const items = filter === "All" ? cat.items : cat.items.filter((i) => i.type === filter);
+  const items = cat.items;
   return (
     <div className="animate-fade-up">
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
         <h3 className="font-display text-3xl sm:text-4xl text-foreground">Pizza</h3>
       </div>
-      <ChipRow>
-        {PIZZA_CHIPS.map((c) => (
-          <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
-        ))}
-      </ChipRow>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {items.map((item, i) => (
           <ItemCard
@@ -180,22 +175,15 @@ function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string
 // ---------- Deals tab ----------
 const DEAL_CHIPS = ["All", "Pizza Deals", "Lunch & Midnight", "1 Person", "2 Person", "Family", "Student"];
 
-function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string) => void }) {
+function DealsTab(_: { filter: string; setFilter: (v: string) => void }) {
   const { addItem } = useCart();
-  const items = filter === "All" ? dealsGroup.items : dealsGroup.items.filter((d) => d.type === filter);
-  const note = filter !== "All" ? dealsGroup.notes[filter] : undefined;
+  const items = dealsGroup.items;
   const icon = getCategoryIcon("Deals");
   return (
     <div className="animate-fade-up">
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
         <h3 className="font-display text-3xl sm:text-4xl text-foreground">Deals & Offers</h3>
       </div>
-      <ChipRow>
-        {DEAL_CHIPS.map((c) => (
-          <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
-        ))}
-      </ChipRow>
-      {note && <p className="mb-5 text-sm text-secondary font-medium italic">{note}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {items.map((deal) => (
           <DealCard
