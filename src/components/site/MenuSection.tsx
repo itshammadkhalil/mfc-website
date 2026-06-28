@@ -3,6 +3,7 @@ import { Minus, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { menuCategories, type MenuItem, type MenuCategory } from "@/data/menu";
+import { getMenuItemImage } from "@/data/menu-images";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -91,8 +92,14 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
         <p className="text-xs text-muted-foreground mb-4 italic">{cat.note}</p>
       )}
       <div className="grid sm:grid-cols-2 gap-4">
-        {cat.items.map((item) => (
-          <ItemCard key={cat.category + item.name} category={cat.category} sizes={cat.sizes} item={item} />
+        {cat.items.map((item, idx) => (
+          <ItemCard
+            key={cat.category + item.name}
+            category={cat.category}
+            sizes={cat.sizes}
+            item={item}
+            image={getMenuItemImage(cat.category, idx)}
+          />
         ))}
       </div>
     </div>
@@ -103,11 +110,14 @@ function ItemCard({
   category,
   sizes,
   item,
+  image,
 }: {
   category: string;
   sizes: string[];
   item: MenuItem;
+  image: string;
 }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
   const validIndices = item.prices.map((p, i) => (p == null ? -1 : i)).filter((i) => i >= 0);
   const initial = validIndices[0] ?? 0;
   const [sizeIdx, setSizeIdx] = useState(initial);
@@ -137,7 +147,23 @@ function ItemCard({
   };
 
   return (
-    <div className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
+    <div className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
+      <div className="relative h-[180px] sm:h-[200px] w-full overflow-hidden bg-muted">
+        {!imgLoaded && (
+          <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted to-muted/60" />
+        )}
+        <img
+          src={image}
+          alt={item.name}
+          loading="lazy"
+          onLoad={() => setImgLoaded(true)}
+          className={cn(
+            "h-full w-full object-cover transition-all duration-500 group-hover:scale-105",
+            imgLoaded ? "opacity-100" : "opacity-0",
+          )}
+        />
+      </div>
+      <div className="p-5">
       <div className="flex items-start justify-between gap-3">
         <h4 className="font-semibold text-base text-foreground leading-snug">{item.name}</h4>
         <span className="shrink-0 font-display text-xl text-primary">
@@ -194,6 +220,7 @@ function ItemCard({
         >
           Add to Cart
         </Button>
+      </div>
       </div>
     </div>
   );
