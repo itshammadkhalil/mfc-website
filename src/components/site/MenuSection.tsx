@@ -359,13 +359,15 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
   const [src, setSrc] = useState(image);
   const [didFallback, setDidFallback] = useState(false);
   return (
-    <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-br from-secondary/10 to-primary/5">
-      {!loaded && <div className="absolute inset-0 animate-pulse bg-muted/40" />}
+    <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+      {!loaded && <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted via-muted/60 to-muted" />}
       <img
         src={src}
         alt={alt}
         loading="lazy"
         decoding="async"
+        width={1024}
+        height={768}
         onLoad={() => setLoaded(true)}
         onError={() => {
           if (didFallback) return;
@@ -374,7 +376,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
           setLoaded(true);
         }}
         className={cn(
-          "h-full w-full object-contain p-3 transition-all duration-500 group-hover:scale-105",
+          "h-full w-full object-cover transition-all duration-500 group-hover:scale-105",
           loaded ? "opacity-100" : "opacity-0",
         )}
       />
