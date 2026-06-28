@@ -531,86 +531,122 @@ function ItemOptionsDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-        <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
-          <img src={image} alt={item.name} className="h-full w-full object-cover" />
-        </div>
-        <div className="p-5">
-          <DialogHeader className="text-left">
-            {badge && (
-              <span className="inline-block self-start mb-1 px-2 py-0.5 rounded-full bg-secondary/15 text-secondary text-[10px] font-bold uppercase tracking-wider">
-                {badge}
-              </span>
-            )}
-            <DialogTitle className="font-display text-2xl text-foreground">{item.name}</DialogTitle>
-          </DialogHeader>
+    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+        />
+        <DialogPrimitive.Content
+          className={cn(
+            "fixed z-50 bg-card text-card-foreground shadow-2xl overflow-hidden flex flex-col",
+            // Mobile: bottom sheet
+            "inset-x-0 bottom-0 max-h-[92vh] rounded-t-3xl",
+            "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom data-[state=closed]:duration-200 data-[state=open]:duration-300",
+            // sm+: centered modal
+            "sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-md sm:rounded-2xl sm:max-h-[90vh]",
+            "sm:data-[state=open]:slide-in-from-bottom-0 sm:data-[state=closed]:slide-out-to-bottom-0 sm:data-[state=open]:zoom-in-95 sm:data-[state=closed]:zoom-out-95",
+          )}
+        >
+          {/* Drag handle (mobile only) */}
+          <div className="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0">
+            <div className="h-1.5 w-12 rounded-full bg-muted-foreground/30" />
+          </div>
 
-          <div className="mt-4">
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-              Choose size
+          <div className="relative overflow-y-auto">
+            {/* Image */}
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
+              <img src={image} alt={item.name} className="h-full w-full object-cover" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-card/80 to-transparent" />
             </div>
-            <div className="grid grid-cols-2 gap-2">
-              {item.sizes.map((s, i) => {
-                const p = item.prices[i];
-                if (p == null) return null;
-                const active = sizeIdx === i;
-                return (
+
+            {/* Close button — floating top-right */}
+            <DialogPrimitive.Close
+              className="absolute right-3 top-3 sm:right-4 sm:top-4 grid h-9 w-9 place-items-center rounded-full bg-black/50 text-white backdrop-blur-md hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              aria-label="Close"
+            >
+              <X className="h-4 w-4" />
+            </DialogPrimitive.Close>
+
+            <div className="p-5 sm:p-6">
+              <div className="text-left">
+                {badge && (
+                  <span className="inline-block mb-1.5 px-2 py-0.5 rounded-full bg-secondary/15 text-secondary text-[10px] font-bold uppercase tracking-wider">
+                    {badge}
+                  </span>
+                )}
+                <DialogPrimitive.Title className="font-display text-2xl sm:text-3xl text-foreground leading-tight">
+                  {item.name}
+                </DialogPrimitive.Title>
+              </div>
+
+              <div className="mt-5">
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2.5">
+                  Choose size
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {item.sizes.map((s, i) => {
+                    const p = item.prices[i];
+                    if (p == null) return null;
+                    const active = sizeIdx === i;
+                    return (
+                      <button
+                        key={s}
+                        onClick={() => setSizeIdx(i)}
+                        className={cn(
+                          "flex items-center justify-between rounded-xl border px-3.5 py-3 text-sm transition-all",
+                          active
+                            ? "bg-secondary text-secondary-foreground border-secondary shadow-warm"
+                            : "bg-background text-foreground border-border hover:border-primary/40",
+                        )}
+                      >
+                        <span className="font-semibold">{s}</span>
+                        <span className={cn("text-xs", active ? "opacity-90" : "text-muted-foreground")}>
+                          {formatPKR(p)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-5 flex items-center justify-between gap-3">
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Quantity
+                </div>
+                <div className="flex items-center rounded-lg border border-border bg-background">
                   <button
-                    key={s}
-                    onClick={() => setSizeIdx(i)}
-                    className={cn(
-                      "flex items-center justify-between rounded-lg border px-3 py-2.5 text-sm transition-colors",
-                      active
-                        ? "bg-secondary text-secondary-foreground border-secondary shadow-warm"
-                        : "bg-card text-foreground border-border hover:border-primary/40",
-                    )}
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    className="grid h-10 w-10 place-items-center text-muted-foreground hover:text-primary"
+                    aria-label="Decrease"
                   >
-                    <span className="font-semibold">{s}</span>
-                    <span className={cn("text-xs", active ? "opacity-90" : "text-muted-foreground")}>
-                      {formatPKR(p)}
-                    </span>
+                    <Minus className="h-4 w-4" />
                   </button>
-                );
-              })}
+                  <span className="w-8 text-center text-sm font-semibold">{qty}</span>
+                  <button
+                    onClick={() => setQty((q) => q + 1)}
+                    className="grid h-10 w-10 place-items-center text-muted-foreground hover:text-primary"
+                    aria-label="Increase"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <Button
+                onClick={onConfirm}
+                disabled={price == null}
+                className="mt-6 w-full h-12 text-base bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl"
+              >
+                Add to Cart{total != null ? ` — ${formatPKR(total)}` : ""}
+              </Button>
             </div>
           </div>
-
-          <div className="mt-5 flex items-center justify-between gap-3">
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Quantity
-            </div>
-            <div className="flex items-center rounded-lg border border-border">
-              <button
-                onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="grid h-9 w-9 place-items-center text-muted-foreground hover:text-primary"
-                aria-label="Decrease"
-              >
-                <Minus className="h-4 w-4" />
-              </button>
-              <span className="w-8 text-center text-sm font-semibold">{qty}</span>
-              <button
-                onClick={() => setQty((q) => q + 1)}
-                className="grid h-9 w-9 place-items-center text-muted-foreground hover:text-primary"
-                aria-label="Increase"
-              >
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-
-          <Button
-            onClick={onConfirm}
-            disabled={price == null}
-            className="mt-5 w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            Add to Cart{total != null ? ` — ${formatPKR(total)}` : ""}
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }
+
 
 
 
