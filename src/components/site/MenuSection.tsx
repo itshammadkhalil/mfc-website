@@ -3,7 +3,7 @@ import { Minus, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { menuCategories, type MenuItem, type MenuCategory } from "@/data/menu";
-import { getMenuItemImage } from "@/data/menu-images";
+import { getMenuItemImage, FALLBACK_IMAGE } from "@/data/menu-images";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -118,6 +118,8 @@ function ItemCard({
   image: string;
 }) {
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgSrc, setImgSrc] = useState(image);
+  const [didFallback, setDidFallback] = useState(false);
   const validIndices = item.prices.map((p, i) => (p == null ? -1 : i)).filter((i) => i >= 0);
   const initial = validIndices[0] ?? 0;
   const [sizeIdx, setSizeIdx] = useState(initial);
@@ -153,10 +155,16 @@ function ItemCard({
           <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted to-muted/60" />
         )}
         <img
-          src={image}
+          src={imgSrc}
           alt={item.name}
           loading="lazy"
           onLoad={() => setImgLoaded(true)}
+          onError={() => {
+            if (didFallback) return;
+            setDidFallback(true);
+            setImgSrc(FALLBACK_IMAGE);
+            setImgLoaded(true);
+          }}
           className={cn(
             "h-full w-full object-cover transition-all duration-500 group-hover:scale-105",
             imgLoaded ? "opacity-100" : "opacity-0",
