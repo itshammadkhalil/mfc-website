@@ -59,12 +59,13 @@ export function DealsSection() {
         )}
 
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {current.items.map((deal) => (
+          {current.items.map((deal, idx) => (
             <div
               key={deal.name}
               className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-warm hover:border-primary/40 animate-fade-up"
             >
-              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary/10 blur-2xl group-hover:bg-primary/20 transition-colors" />
+              <DealImage src={getDealImage(idx)} alt={deal.name} />
+              <div className="absolute -right-6 top-44 h-24 w-24 rounded-full bg-primary/10 blur-2xl group-hover:bg-primary/20 transition-colors" />
               <div className="flex items-center gap-2 text-accent">
                 <Tag className="h-4 w-4" />
                 <span className="text-xs uppercase tracking-wider font-semibold">Deal</span>
