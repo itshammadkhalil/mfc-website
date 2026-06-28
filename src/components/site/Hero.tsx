@@ -1,4 +1,4 @@
-import { Clock, Snowflake, Truck } from "lucide-react";
+import { Leaf, Snowflake, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero-food.jpg";
 
@@ -45,10 +45,10 @@ export function Hero() {
             </Button>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
-            <Badge icon={<Snowflake className="h-4 w-4" />} label="Air Condition Hall" />
-            <Badge icon={<Clock className="h-4 w-4" />} label="10:00 AM – 02:00 AM" />
-            <Badge icon={<Truck className="h-4 w-4" />} label="Free Delivery within 3km" />
+          <div className="mt-8 flex flex-wrap gap-2 max-w-2xl">
+            <Badge icon={<Snowflake className="h-3.5 w-3.5" />} label="Air Condition Hall" />
+            <Badge icon={<Sparkles className="h-3.5 w-3.5" />} label="Hygienic Kitchen" />
+            <Badge icon={<Leaf className="h-3.5 w-3.5" />} label="Fresh Food" />
           </div>
         </div>
       </div>
@@ -58,11 +58,11 @@ export function Hero() {
 
 function Badge({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <div className="flex items-center gap-2.5 rounded-xl border border-cream/15 bg-background/10 backdrop-blur px-4 py-2.5">
-      <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary/90 text-primary-foreground">
+    <div className="inline-flex items-center gap-1.5 rounded-full border border-cream/15 bg-background/10 backdrop-blur px-2.5 py-1">
+      <span className="grid h-6 w-6 place-items-center rounded-full bg-primary/90 text-primary-foreground">
         {icon}
       </span>
-      <span className="text-xs sm:text-sm font-medium text-cream">{label}</span>
+      <span className="text-[11px] sm:text-xs font-medium text-cream pr-1">{label}</span>
     </div>
   );
 }
