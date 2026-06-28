@@ -34,12 +34,12 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-4">
+        <div className="flex h-20 sm:h-24 items-center justify-between gap-4">
           <a href="#home" className="flex min-w-0 items-center gap-3 shrink-0">
             <img
               src={mfcLogo}
               alt="MFC Miran Jee Food Club"
-              className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 object-contain"
+              className="h-12 sm:h-16 w-auto shrink-0 object-contain"
               loading="eager"
               decoding="async"
             />
