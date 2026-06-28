@@ -37,6 +37,35 @@ export function MenuSection() {
   const [query, setQuery] = useState("");
   const [pizzaFilter, setPizzaFilter] = useState<string>("All");
   const [dealFilter, setDealFilter] = useState<string>("All");
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Sync from URL hash (#deals, #menu-burgers, etc.)
+  useEffect(() => {
+    const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const apply = () => {
+      const h = window.location.hash.replace(/^#/, "").toLowerCase();
+      if (!h) return;
+      const match = TAB_ORDER.find((t) => slug(t) === h || `menu-${slug(t)}` === h);
+      if (match) {
+        setActive(match);
+        setQuery("");
+        setTimeout(() => {
+          document.getElementById("menu")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 0);
+      }
+    };
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, []);
+
+  const handleSelect = (c: string) => {
+    setQuery("");
+    setActive(c);
+    if (window.matchMedia("(max-width: 1023px)").matches) {
+      setTimeout(() => contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    }
+  };
 
   const orderedCategories = useMemo(
     () => TAB_ORDER.map((t) => menuCategories.find((c) => c.category === t)).filter(Boolean) as MenuCategory[],
