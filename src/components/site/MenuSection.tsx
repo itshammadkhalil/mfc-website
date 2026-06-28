@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Minus, Plus, Search, Tag } from "lucide-react";
+import { Minus, Plus, Search, Tag, X } from "lucide-react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   menuCategories,
   dealsGroup,
@@ -10,6 +10,7 @@ import {
   type MenuCategory,
   type DealItem,
 } from "@/data/menu";
+
 
 import { getCategoryIcon, getPizzaImage, FALLBACK_IMAGE } from "@/data/menu-images";
 import { useCart, formatPKR } from "@/lib/cart-context";
