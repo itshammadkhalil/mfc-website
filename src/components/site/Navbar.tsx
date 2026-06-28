@@ -3,6 +3,7 @@ import { Menu, ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
+import mfcLogo from "@/assets/mfc-logo.png";
 
 const links = [
   { href: "#home", label: "Home" },
@@ -37,9 +38,13 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4">
           <a href="#home" className="flex min-w-0 items-center gap-3 shrink-0">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-warm shadow-warm">
-              <span className="font-display text-xl text-primary-foreground tracking-wider">MFC</span>
-            </div>
+            <img
+              src={mfcLogo}
+              alt="MFC Miran Jee Food Club"
+              className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 object-contain"
+              loading="eager"
+              decoding="async"
+            />
             <div className="hidden sm:block min-w-0">
               <div className="font-display text-lg leading-none text-foreground truncate">Miran Jee</div>
               <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Food Club</div>

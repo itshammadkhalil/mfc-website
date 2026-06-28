@@ -1,5 +1,6 @@
 import { Clock, Facebook, Instagram, MapPin, Phone } from "lucide-react";
 import { restaurant } from "@/data/menu";
+import mfcLogo from "@/assets/mfc-logo.png";
 
 export function Footer() {
   return (
@@ -8,9 +9,13 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-10">
           <div className="md:col-span-1">
             <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-warm">
-                <span className="font-display text-xl text-primary-foreground">MFC</span>
-              </div>
+              <img
+                src={mfcLogo}
+                alt="MFC Miran Jee Food Club"
+                className="h-14 w-14 sm:h-16 sm:w-16 object-contain"
+                loading="lazy"
+                decoding="async"
+              />
               <div>
                 <div className="font-display text-lg leading-none">Miran Jee</div>
                 <div className="text-[10px] uppercase tracking-[0.2em] text-cream/60">Food Club</div>
