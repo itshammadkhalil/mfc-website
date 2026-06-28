@@ -9,7 +9,7 @@ import {
   type MenuCategory,
   type DealItem,
 } from "@/data/menu";
-import { getCategoryIcon, FALLBACK_IMAGE } from "@/data/menu-images";
+import { getCategoryIcon, getPizzaImage, FALLBACK_IMAGE } from "@/data/menu-images";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -153,7 +153,6 @@ const PIZZA_CHIPS = ["All", "Standard", "Classic", "Premium", "Special Pizzaz", 
 function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string) => void }) {
   const cat = menuCategories.find((c) => c.category === "Pizza")!;
   const items = filter === "All" ? cat.items : cat.items.filter((i) => i.type === filter);
-  const icon = getCategoryIcon("Pizza");
   return (
     <div className="animate-fade-up">
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
@@ -165,12 +164,12 @@ function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string
         ))}
       </ChipRow>
       <div className="grid sm:grid-cols-2 gap-4">
-        {items.map((item) => (
+        {items.map((item, i) => (
           <ItemCard
             key={(item.type ?? "") + item.name}
             category="Pizza"
             item={item}
-            image={icon}
+            image={getPizzaImage(i)}
             badge={item.type}
           />
         ))}
@@ -360,13 +359,15 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
   const [src, setSrc] = useState(image);
   const [didFallback, setDidFallback] = useState(false);
   return (
-    <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-br from-secondary/10 to-primary/5">
-      {!loaded && <div className="absolute inset-0 animate-pulse bg-muted/40" />}
+    <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+      {!loaded && <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted via-muted/60 to-muted" />}
       <img
         src={src}
         alt={alt}
         loading="lazy"
         decoding="async"
+        width={1024}
+        height={768}
         onLoad={() => setLoaded(true)}
         onError={() => {
           if (didFallback) return;
@@ -375,7 +376,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
           setLoaded(true);
         }}
         className={cn(
-          "h-full w-full object-contain p-3 transition-all duration-500 group-hover:scale-105",
+          "h-full w-full object-cover transition-all duration-500 group-hover:scale-105",
           loaded ? "opacity-100" : "opacity-0",
         )}
       />
