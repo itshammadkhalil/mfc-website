@@ -21,9 +21,15 @@ export function Footer() {
                 <div className="text-[10px] uppercase tracking-[0.2em] text-cream/60">Food Club</div>
               </div>
             </div>
-            <p className="mt-4 text-sm text-cream/70">{restaurant.tagline}</p>
+            <p className="mt-4 text-sm text-cream/70">Where Every Bite Tells a Story</p>
             <div className="mt-4 flex gap-2">
-              <a href="#" aria-label="Facebook" className="grid h-9 w-9 place-items-center rounded-lg border border-cream/15 hover:bg-primary hover:border-primary transition-colors">
+              <a
+                href="https://www.facebook.com/miranjeefoodclub/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="grid h-9 w-9 place-items-center rounded-lg border border-cream/15 hover:bg-primary hover:border-primary transition-colors"
+              >
                 <Facebook className="h-4 w-4" />
               </a>
               <a href="#" aria-label="Instagram" className="grid h-9 w-9 place-items-center rounded-lg border border-cream/15 hover:bg-primary hover:border-primary transition-colors">
@@ -51,13 +57,13 @@ export function Footer() {
                   <a href={`tel:${p.replace(/-/g, "")}`} className="hover:text-primary">{p}</a>
                 </li>
               ))}
-              <li className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                <span>{restaurant.branch}</span>
-              </li>
               <li className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-primary shrink-0" />
                 <span>{restaurant.timing}</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <span>{restaurant.branch}</span>
               </li>
             </ul>
           </div>
