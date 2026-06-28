@@ -125,7 +125,8 @@ export function MenuSection() {
           </aside>
 
           {/* Content */}
-          <div className="space-y-12">
+          <div ref={contentRef} className="space-y-12 scroll-mt-20">
+
             {searchActive ? (
               <SearchResults
                 cats={searchResults!.cats}
