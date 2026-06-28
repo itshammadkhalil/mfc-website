@@ -3,6 +3,7 @@ import { Minus, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { menuCategories, type MenuItem, type MenuCategory } from "@/data/menu";
+import { getMenuItemImage } from "@/data/menu-images";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
