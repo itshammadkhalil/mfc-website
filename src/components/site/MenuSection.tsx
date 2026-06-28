@@ -301,7 +301,7 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
 }
 
 // ---------- Shared image / chip ----------
-function ChipRow({ children }: { children: React.ReactNode }) {
+function ChipRow({ children }: { children: ReactNode }) {
   return (
     <div className="relative -mx-4 sm:mx-0 mb-5">
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 sm:px-0 sm:flex-wrap pb-1">
