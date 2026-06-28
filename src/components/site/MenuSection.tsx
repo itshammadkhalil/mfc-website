@@ -217,24 +217,25 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
 
 function DealCard({ deal, image, onAdd }: { deal: DealItem; image: string; onAdd: () => void }) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
+    <div className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
       <CardImage image={image} alt={deal.name} />
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-2 text-accent">
-          <Tag className="h-3.5 w-3.5" />
-          <span className="text-[10px] uppercase tracking-wider font-semibold">{deal.type}</span>
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
+        <div className="flex items-center gap-1.5 text-accent">
+          <Tag className="h-3 w-3" />
+          <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold truncate">{deal.type}</span>
         </div>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-foreground">{deal.name}</p>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="font-display text-2xl text-primary">{formatPKR(deal.price)}</span>
-          <Button size="sm" onClick={onAdd} className="bg-primary hover:bg-primary/90">
-            Add to Cart
+        <p className="mt-1.5 flex-1 text-xs sm:text-sm leading-snug text-foreground line-clamp-2">{deal.name}</p>
+        <div className="mt-3 flex items-center justify-between gap-2">
+          <span className="font-display text-lg sm:text-xl text-primary">{formatPKR(deal.price)}</span>
+          <Button size="sm" onClick={onAdd} className="h-8 px-2.5 text-xs bg-primary hover:bg-primary/90">
+            Add
           </Button>
         </div>
       </div>
     </div>
   );
 }
+
 
 // ---------- Search results ----------
 function SearchResults({
