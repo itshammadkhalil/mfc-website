@@ -43,3 +43,23 @@ export function getMenuItemImage(category: string, index = 0): string {
 export function getDealImage(index = 0): string {
   return dealsPool[index % dealsPool.length];
 }
+
+// Safe inline SVG fallback — never network-fails, matches warm palette.
+export const FALLBACK_IMAGE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 400'>
+      <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+        <stop offset='0' stop-color='#7a1d1d'/><stop offset='1' stop-color='#d97706'/>
+      </linearGradient></defs>
+      <rect width='640' height='400' fill='url(#g)'/>
+      <text x='50%' y='52%' text-anchor='middle' font-family='Georgia,serif'
+        font-size='42' fill='#fff8e7' opacity='0.92' font-weight='700'>MFC</text>
+      <text x='50%' y='66%' text-anchor='middle' font-family='Arial,sans-serif'
+        font-size='14' fill='#fff8e7' opacity='0.75' letter-spacing='3'>MIRAN JEE FOOD CLUB</text>
+    </svg>`,
+  );
+
+export function categoryFallback(category: string): string {
+  return getMenuItemImage(category);
+}
