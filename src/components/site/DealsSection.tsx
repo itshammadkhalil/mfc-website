@@ -2,10 +2,30 @@ import { useState } from "react";
 import { Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { dealCategories } from "@/data/menu";
+import { getDealImage } from "@/data/menu-images";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { SectionHeader } from "./MenuSection";
+
+function DealImage({ src, alt }: { src: string; alt: string }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="relative -mx-6 -mt-6 mb-4 h-[180px] overflow-hidden bg-muted">
+      {!loaded && <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted to-muted/60" />}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        className={cn(
+          "h-full w-full object-cover transition-opacity duration-500",
+          loaded ? "opacity-100" : "opacity-0",
+        )}
+      />
+    </div>
+  );
+}
 
 export function DealsSection() {
   const [active, setActive] = useState(dealCategories[0].category);
