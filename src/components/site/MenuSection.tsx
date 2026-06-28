@@ -110,11 +110,14 @@ function ItemCard({
   category,
   sizes,
   item,
+  image,
 }: {
   category: string;
   sizes: string[];
   item: MenuItem;
+  image: string;
 }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
   const validIndices = item.prices.map((p, i) => (p == null ? -1 : i)).filter((i) => i >= 0);
   const initial = validIndices[0] ?? 0;
   const [sizeIdx, setSizeIdx] = useState(initial);
