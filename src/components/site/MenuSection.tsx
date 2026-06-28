@@ -131,11 +131,11 @@ function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
         <h3 className="font-display text-3xl sm:text-4xl text-foreground">Pizza</h3>
       </div>
-      <div className="mb-6 flex flex-wrap gap-2">
+      <ChipRow>
         {PIZZA_CHIPS.map((c) => (
           <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
         ))}
-      </div>
+      </ChipRow>
       <div className="grid sm:grid-cols-2 gap-4">
         {items.map((item) => (
           <ItemCard
