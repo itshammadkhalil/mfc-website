@@ -333,7 +333,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
   const [src, setSrc] = useState(image);
   const [didFallback, setDidFallback] = useState(false);
   return (
-    <div className="relative h-[180px] w-full overflow-hidden bg-gradient-to-br from-secondary/10 to-primary/5">
+    <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-br from-secondary/10 to-primary/5">
       {!loaded && <div className="absolute inset-0 animate-pulse bg-muted/40" />}
       <img
         src={src}
