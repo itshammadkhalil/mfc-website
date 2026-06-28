@@ -3,7 +3,6 @@ import { CartProvider } from "@/lib/cart-context";
 import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
 import { MenuSection } from "@/components/site/MenuSection";
-import { DealsSection } from "@/components/site/DealsSection";
 import { About } from "@/components/site/About";
 import { Reviews } from "@/components/site/Reviews";
 import { Footer } from "@/components/site/Footer";
@@ -38,7 +37,6 @@ function HomePage() {
         <main>
           <Hero />
           <MenuSection />
-          <DealsSection />
           <About />
           <Reviews />
         </main>

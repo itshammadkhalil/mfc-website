@@ -1,22 +1,25 @@
 export type MenuItem = {
   name: string;
+  sizes: string[];
   prices: (number | null)[];
+  type?: string;
 };
 
 export type MenuCategory = {
   category: string;
-  sizes: string[];
   items: MenuItem[];
+  types?: string[];
   addOn?: { name: string; price: number };
   addOns?: { name: string; price: number }[];
   note?: string;
 };
 
-export type DealItem = { name: string; price: number };
-export type DealCategory = {
+export type DealItem = { type: string; name: string; price: number };
+export type DealGroup = {
   category: string;
+  types: string[];
+  notes: Record<string, string>;
   items: DealItem[];
-  note?: string;
 };
 
 export const restaurant = {
@@ -33,282 +36,255 @@ export const restaurant = {
   },
 };
 
+// ---------- Pizza ----------
+const standardSizes = ["Small", "Medium", "Large", "Family"];
+const mk = (
+  type: string,
+  sizes: string[],
+  prices: (number | null)[],
+  names: string[],
+): MenuItem[] => names.map((name) => ({ name, type, sizes, prices }));
+
+const pizzaItems: MenuItem[] = [
+  ...mk("Standard", standardSizes, [550, 1100, 1450, 2000], [
+    "Vege Lover Pizza",
+    "Supreme Pizza",
+    "Cheese Lover Pizza",
+    "Shahi Pizza",
+    "Chicken Tikka Pizza",
+    "Achari Pizza",
+    "Chicken Fajita Pizza",
+    "Bonfire Pizza",
+    "Simple Malai Boti Pizza",
+  ]),
+  ...mk("Classic", standardSizes, [600, 1200, 1600, 2100], [
+    "Crush Kabab Pizza",
+    "Crunchy Pizza",
+    "Creamy Pizza",
+    "Pepperoni Pizza",
+  ]),
+  ...mk("Premium", standardSizes, [700, 1350, 1750, 2350], [
+    "Lazania Malai Boti Pizza",
+    "Cheese Crust Pizza",
+    "Behari Kabab Pizza",
+    "Multani Pizza",
+    "Seekh Kabab Pizza",
+    "Lazania Pizza",
+    "Extreme Pizza",
+    "Crown Crust Pizza",
+    "Squire Crust Pizza",
+  ]),
+  ...mk("Special Pizzaz", standardSizes, [800, 1550, 1900, 2750], [
+    "Double Seekh Kabab Pizza",
+    "Crispy Crust Pizza",
+    "Special Multan Sultan Pizza",
+    "4X Pizza (Any 4 Flavours)",
+    "Mughlai Pizza",
+    "Royal Crust Pizza",
+  ]),
+  ...mk("New Addition", ["Medium", "Large"], [1600, 2200], [
+    "Double Extreme Pizza",
+    "Lazania Double Extreme",
+    "Seekh Kabab Double Extreme",
+    "Parry Parry Extreme",
+  ]),
+  ...mk("Mazz", ["Large", "Family"], [2400, 3200], ["Special Mazz Pizza"]),
+  ...mk("Mataka", ["Standard"], [1100], [
+    "Malai Boti Pizza (Mataka)",
+    "Tikka Boti Pizza (Mataka)",
+    "Kabab Pizza (Mataka)",
+  ]),
+  ...mk("Steak", ["Medium", "Large"], [1100, 1400], ["Special Steak Pizza"]),
+];
+
+const single = (name: string, price: number | null): MenuItem => ({
+  name,
+  sizes: ["Standard"],
+  prices: [price],
+});
+
 export const menuCategories: MenuCategory[] = [
   {
-    category: "Standard Pizza",
-    sizes: ["Small", "Medium", "Large", "Family"],
-    items: [
-      { name: "Vege Lover Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Supreme Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Cheese Lover Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Shahi Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Chicken Tikka Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Achari Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Chicken Fajita Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Bonfire Pizza", prices: [550, 1100, 1450, 2000] },
-      { name: "Simple Malai Boti Pizza", prices: [550, 1100, 1450, 2000] },
-    ],
-  },
-  {
-    category: "Classic Pizza",
-    sizes: ["Small", "Medium", "Large", "Family"],
-    items: [
-      { name: "Crush Kabab Pizza", prices: [600, 1200, 1600, 2100] },
-      { name: "Crunchy Pizza", prices: [600, 1200, 1600, 2100] },
-      { name: "Creamy Pizza", prices: [600, 1200, 1600, 2100] },
-      { name: "Pepperoni Pizza", prices: [600, 1200, 1600, 2100] },
-    ],
-  },
-  {
-    category: "Premium Pizza",
-    sizes: ["Small", "Medium", "Large", "Family"],
-    items: [
-      { name: "Lazania Malai Boti Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Cheese Crust Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Behari Kabab Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Multani Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Seekh Kabab Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Lazania Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Extreme Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Crown Crust Pizza", prices: [700, 1350, 1750, 2350] },
-      { name: "Squire Crust Pizza", prices: [700, 1350, 1750, 2350] },
-    ],
-  },
-  {
-    category: "Special Pizzaz",
-    sizes: ["Small", "Medium", "Large", "Family"],
-    items: [
-      { name: "Double Seekh Kabab Pizza", prices: [800, 1550, 1900, 2750] },
-      { name: "Crispy Crust Pizza", prices: [800, 1550, 1900, 2750] },
-      { name: "Special Multan Sultan Pizza", prices: [800, 1550, 1900, 2750] },
-      { name: "4X Pizza (Any 4 Flavours)", prices: [800, 1550, 1900, 2750] },
-      { name: "Mughlai Pizza", prices: [800, 1550, 1900, 2750] },
-      { name: "Royal Crust Pizza", prices: [800, 1550, 1900, 2750] },
-    ],
-  },
-  {
-    category: "New Addition Pizza",
-    sizes: ["Medium", "Large"],
-    items: [
-      { name: "Double Extreme Pizza", prices: [1600, 2200] },
-      { name: "Lazania Double Extreme", prices: [1600, 2200] },
-      { name: "Seekh Kabab Double Extreme", prices: [1600, 2200] },
-      { name: "Parry Parry Extreme", prices: [1600, 2200] },
-    ],
-  },
-  {
-    category: "Special Mazz Pizza",
-    sizes: ["Large", "Family"],
-    items: [{ name: "Special Mazz Pizza", prices: [2400, 3200] }],
-  },
-  {
-    category: "Mataka Pizza",
-    sizes: ["Standard"],
-    items: [
-      { name: "Malai Boti Pizza (Mataka)", prices: [1100] },
-      { name: "Tikka Boti Pizza (Mataka)", prices: [1100] },
-      { name: "Kabab Pizza (Mataka)", prices: [1100] },
-    ],
-  },
-  {
-    category: "Special Steak Pizza",
-    sizes: ["Medium", "Large"],
-    items: [{ name: "Special Steak Pizza", prices: [1100, 1400] }],
+    category: "Pizza",
+    types: ["Standard", "Classic", "Premium", "Special Pizzaz", "New Addition", "Mazz", "Mataka", "Steak"],
+    items: pizzaItems,
   },
   {
     category: "Burgers",
-    sizes: ["Standard"],
-    items: [
-      { name: "Zinger Burger", prices: [370] },
-      { name: "Chicken Burger", prices: [320] },
-      { name: "Mighty Burger", prices: [650] },
-      { name: "Pizza Burger", prices: [600] },
-      { name: "Jalapeno Burger", prices: [370] },
-      { name: "Tikka Burger", prices: [320] },
-      { name: "Double Decker Burger", prices: [600] },
-      { name: "Double Patty Burger", prices: [600] },
-      { name: "MFC 20-20 Burger", prices: [660] },
-      { name: "Special Grill Tikka Burger", prices: [500] },
-      { name: "Special Sunny Grill Burger", prices: [650] },
-      { name: "Special Beef Burger", prices: [650] },
-    ],
     addOn: { name: "Extra Cheese Slice", price: 70 },
+    items: [
+      single("Zinger Burger", 370),
+      single("Chicken Burger", 320),
+      single("Mighty Burger", 650),
+      single("Pizza Burger", 600),
+      single("Jalapeno Burger", 370),
+      single("Tikka Burger", 320),
+      single("Double Decker Burger", 600),
+      single("Double Patty Burger", 600),
+      single("MFC 20-20 Burger", 660),
+      single("Special Grill Tikka Burger", 500),
+      single("Special Sunny Grill Burger", 650),
+      single("Special Beef Burger", 650),
+    ],
   },
   {
     category: "French Fries",
-    sizes: ["Standard"],
     items: [
-      { name: "French Fries Small", prices: [250] },
-      { name: "French Fries Large", prices: [350] },
-      { name: "French Fries Family", prices: [500] },
-      { name: "Loaded Pizza Fries Small", prices: [500] },
-      { name: "Loaded Pizza Fries Large", prices: [700] },
-      { name: "Crunchy Pizza Fries Small", prices: [550] },
-      { name: "Crunchy Pizza Fries Large", prices: [800] },
+      single("French Fries Small", 250),
+      single("French Fries Large", 350),
+      single("French Fries Family", 500),
+      single("Loaded Pizza Fries Small", 500),
+      single("Loaded Pizza Fries Large", 700),
+      single("Crunchy Pizza Fries Small", 550),
+      single("Crunchy Pizza Fries Large", 800),
     ],
   },
   {
     category: "Chicken Rolls",
-    sizes: ["Standard"],
-    items: [
-      { name: "MFC Special Malai Boti Roll", prices: [350] },
-      { name: "Shawarma Roll", prices: [220] },
-      { name: "Cheese Shawarma Roll", prices: [320] },
-      { name: "Pratha Roll", prices: [320] },
-      { name: "Zinger Pratha Roll", prices: [380] },
-      { name: "Zinger Shawarma Roll", prices: [380] },
-      { name: "Kabab Roll", prices: [320] },
-      { name: "Arabian Shamoli", prices: [320] },
-      { name: "Twister Roll", prices: [340] },
-      { name: "Shapata Roll", prices: [800] },
-    ],
     addOn: { name: "Extra Cheese Slice", price: 70 },
+    items: [
+      single("MFC Special Malai Boti Roll", 350),
+      single("Shawarma Roll", 220),
+      single("Cheese Shawarma Roll", 320),
+      single("Pratha Roll", 320),
+      single("Zinger Pratha Roll", 380),
+      single("Zinger Shawarma Roll", 380),
+      single("Kabab Roll", 320),
+      single("Arabian Shamoli", 320),
+      single("Twister Roll", 340),
+      single("Shapata Roll", 800),
+    ],
   },
   {
     category: "Hot Wings",
-    sizes: ["Standard"],
     items: [
-      { name: "6 Pc Hot Wings / Nuggets", prices: [320] },
-      { name: "12 Pc Hot Wings / Nuggets", prices: [600] },
-      { name: "10 Pc Oven Baked Wings", prices: [600] },
-      { name: "10 Pc Honey Wings", prices: [600] },
-      { name: "10 Pc Crunchy Hot Shot", prices: [450] },
-      { name: "Hot Shot Shakers", prices: [500] },
+      single("6 Pc Hot Wings / Nuggets", 320),
+      single("12 Pc Hot Wings / Nuggets", 600),
+      single("10 Pc Oven Baked Wings", 600),
+      single("10 Pc Honey Wings", 600),
+      single("10 Pc Crunchy Hot Shot", 450),
+      single("Hot Shot Shakers", 500),
     ],
   },
   {
     category: "Pasta",
-    sizes: ["Half", "Full"],
     items: [
-      { name: "MFC 20 20 Pasta", prices: [550, 750] },
-      { name: "Flaming Pasta", prices: [500, 700] },
-      { name: "Crunchy Pasta", prices: [550, 750] },
-      { name: "White Sauce Pasta", prices: [550, 750] },
+      { name: "MFC 20 20 Pasta", sizes: ["Half", "Full"], prices: [550, 750] },
+      { name: "Flaming Pasta", sizes: ["Half", "Full"], prices: [500, 700] },
+      { name: "Crunchy Pasta", sizes: ["Half", "Full"], prices: [550, 750] },
+      { name: "White Sauce Pasta", sizes: ["Half", "Full"], prices: [550, 750] },
     ],
   },
   {
     category: "Sandwich",
-    sizes: ["Standard"],
     items: [
-      { name: "Tikka Sandwich", prices: [600] },
-      { name: "Mexican Sandwich", prices: [650] },
-      { name: "Malai Boti Sandwich", prices: [650] },
-      { name: "Kabab Sandwich", prices: [650] },
+      single("Tikka Sandwich", 600),
+      single("Mexican Sandwich", 650),
+      single("Malai Boti Sandwich", 650),
+      single("Kabab Sandwich", 650),
     ],
   },
   {
     category: "Broast Chicken",
-    sizes: ["Standard"],
-    items: [
-      { name: "Leg Broast / Grill Leg", prices: [380] },
-      { name: "Chest Broast / Grill Chest", prices: [400] },
-      { name: "Quarter Broast (1 Thigh, 1 Breast, 1 Bun, 1 Fries, 1 Garlic Dip)", prices: [650] },
-      { name: "Half Broast (1 Leg, 1 Thigh, 1 Wing, 1 Breast, 1 Bun, Fries, 1 Garlic Dip)", prices: [1200] },
-      { name: "Full Injected Broast (2 Legs, 2 Thighs, 2 Wings, 2 Breasts, 2 Bun, Fries, 2 Garlic Dips)", prices: [2400] },
-    ],
     addOns: [
       { name: "Extra Bun", price: 50 },
       { name: "Extra Dip Sauce", price: 50 },
     ],
+    items: [
+      single("Leg Broast / Grill Leg", 380),
+      single("Chest Broast / Grill Chest", 400),
+      single("Quarter Broast (1 Thigh, 1 Breast, 1 Bun, 1 Fries, 1 Garlic Dip)", 650),
+      single("Half Broast (1 Leg, 1 Thigh, 1 Wing, 1 Breast, 1 Bun, Fries, 1 Garlic Dip)", 1200),
+      single("Full Injected Broast (2 Legs, 2 Thighs, 2 Wings, 2 Breasts, 2 Bun, Fries, 2 Garlic Dips)", 2400),
+    ],
   },
   {
     category: "Fruit Chaat",
-    sizes: ["Standard"],
-    items: [
-      { name: "Fruit Chaat", prices: [300] },
-      { name: "Russian Salad", prices: [400] },
-    ],
+    items: [single("Fruit Chaat", 300), single("Russian Salad", 400)],
   },
   {
-    category: "Ice Cream Shakes",
-    sizes: ["Standard"],
+    category: "Shakes & Cold Coffee",
     items: [
-      { name: "Browine Shake", prices: [400] },
-      { name: "Love Story Shake", prices: [400] },
-      { name: "Oreo Shake", prices: [400] },
-      { name: "Kit Kat Shake", prices: [400] },
-      { name: "Strawberry Shake", prices: [400] },
-      { name: "Vanilla Shake", prices: [400] },
-      { name: "Chocolate Shake", prices: [400] },
-      { name: "Coffee Shake", prices: [400] },
-      { name: "Mango Shake", prices: [400] },
-      { name: "Kulfa Shake", prices: [400] },
-      { name: "Caramel Shake", prices: [400] },
-    ],
-  },
-  {
-    category: "Cold Coffee",
-    sizes: ["Standard"],
-    items: [
-      { name: "MFC Special Cold Coffee", prices: [500] },
-      { name: "Cold Coffee", prices: [400] },
-      { name: "Simple Cold Coffee", prices: [400] },
-      { name: "Lotus Special", prices: [400] },
+      single("Browine Shake", 400),
+      single("Love Story Shake", 400),
+      single("Oreo Shake", 400),
+      single("Kit Kat Shake", 400),
+      single("Strawberry Shake", 400),
+      single("Vanilla Shake", 400),
+      single("Chocolate Shake", 400),
+      single("Coffee Shake", 400),
+      single("Mango Shake", 400),
+      single("Kulfa Shake", 400),
+      single("Caramel Shake", 400),
+      single("MFC Special Cold Coffee", 500),
+      single("Cold Coffee", 400),
+      single("Simple Cold Coffee", 400),
+      single("Lotus Special", 400),
     ],
   },
   {
     category: "Ice Cream",
-    sizes: ["Standard"],
     items: [
-      { name: "Vanilla Ice Cream", prices: [250] },
-      { name: "Chocolate Ice Cream", prices: [250] },
-      { name: "Pesta Ice Cream", prices: [250] },
-      { name: "Strawberry Ice Cream", prices: [250] },
-      { name: "Mango Ice Cream", prices: [250] },
-      { name: "Tutti Fruti", prices: [250] },
-      { name: "Kulfa", prices: [250] },
-      { name: "Creamel", prices: [250] },
+      single("Vanilla Ice Cream", 250),
+      single("Chocolate Ice Cream", 250),
+      single("Pesta Ice Cream", 250),
+      single("Strawberry Ice Cream", 250),
+      single("Mango Ice Cream", 250),
+      single("Tutti Fruti", 250),
+      single("Kulfa", 250),
+      single("Creamel", 250),
     ],
   },
   {
     category: "Margarita",
-    sizes: ["Standard"],
     items: [
-      { name: "Fresh Lime", prices: [150] },
-      { name: "Mint Margarita", prices: [200] },
-      { name: "Strawberry Margarita", prices: [200] },
-      { name: "Blue Berry Margarita", prices: [200] },
+      single("Fresh Lime", 150),
+      single("Mint Margarita", 200),
+      single("Strawberry Margarita", 200),
+      single("Blue Berry Margarita", 200),
     ],
   },
   {
     category: "Cake",
-    sizes: ["Standard"],
     items: [
-      { name: "1 Pound Chocolate Cake", prices: [600] },
-      { name: "1 Pound Pineapple Cake", prices: [600] },
-      { name: "2 Pound Chocolate Cake", prices: [1200] },
-      { name: "2 Pound Pineapple Cake", prices: [1200] },
+      single("1 Pound Chocolate Cake", 600),
+      single("1 Pound Pineapple Cake", 600),
+      single("2 Pound Chocolate Cake", 1200),
+      single("2 Pound Pineapple Cake", 1200),
     ],
   },
   {
     category: "Drinks",
-    sizes: ["Standard"],
+    note: "Prices vary — please call to confirm.",
     items: [
-      { name: "500ml Drink", prices: [null] },
-      { name: "1000ml Drink", prices: [null] },
-      { name: "1500ml Drink", prices: [null] },
-      { name: "2.25 Liter Drink", prices: [null] },
+      single("500ml Drink", null),
+      single("1000ml Drink", null),
+      single("1500ml Drink", null),
+      single("2.25 Liter Drink", null),
     ],
-    note: "Prices not visible on menu image — to be added manually",
   },
 ];
 
-export const dealCategories: DealCategory[] = [
-  {
-    category: "Special Pizza Deals",
-    items: [
+// ---------- Deals ----------
+const d = (type: string, items: { name: string; price: number }[]): DealItem[] =>
+  items.map((i) => ({ type, name: i.name, price: i.price }));
+
+export const dealsGroup: DealGroup = {
+  category: "Deals",
+  types: ["Pizza Deals", "Lunch & Midnight", "1 Person", "2 Person", "Family", "Student"],
+  notes: {
+    "Lunch & Midnight": "Lunch Time: 1:00pm to 3:00pm | Midnight: 10:00pm to 12:00am",
+  },
+  items: [
+    ...d("Pizza Deals", [
       { name: "Deal 1: 1 Small Lazania Pizza + 1 Zinger Burger + 1 500ml Drink", price: 1150 },
       { name: "Deal 2: 1 Tikka Pizza Small + 1 Fajita Pizza Small + 1 Drink 500ml", price: 1150 },
       { name: "Deal 3: 1 Tikka Pizza Medium + 1 Fajita Pizza Small + 1000ml Drink", price: 1750 },
       { name: "Deal 4: 1 Seekh Kabab Pizza Large + 12 Pc Hot Wings + 1500ml Drink", price: 2450 },
       { name: "Deal 5: 1 Tikka Pizza Medium + 1 Fajita Pizza Medium + 1000ml Drink", price: 2350 },
       { name: "Deal 6: 1 Tikka Pizza Large + 1 Fajita Pizza Large + 1500ml Drink", price: 2950 },
-    ],
-  },
-  {
-    category: "Lunch & Midnight Deals",
-    note: "Lunch Time: 1:00pm to 3:00pm | Midnight: 10:00pm to 12:00am",
-    items: [
+    ]),
+    ...d("Lunch & Midnight", [
       { name: "Deal 1: 3 Zinger Burgers + 1 Liter Drink", price: 1200 },
       { name: "Deal 2: 1 Medium Tikka Pizza + Half Liter Coke", price: 1170 },
       { name: "Deal 3: 1 Large Tikka Pizza + 1 Liter Drink", price: 1550 },
@@ -321,47 +297,35 @@ export const dealCategories: DealCategory[] = [
       { name: "Deal 10: 1 Shahi Pizza Large + 1 Bonfire Pizza Medium + 1 Liter Drink", price: 2550 },
       { name: "Deal 11: 1 Lazania Small + 1 Drink 500ml", price: 750 },
       { name: "Deal 12: 1 Paratha Roll + 1 Malai Boti Roll + 1 Shawarma Roll + 1 Zinger Paratha Roll + 1 Liter Drink", price: 1250 },
-    ],
-  },
-  {
-    category: "1 Person Deals",
-    items: [
+    ]),
+    ...d("1 Person", [
       { name: "Deal 1: 1 Chicken Burger + 1 500ml Drink", price: 410 },
       { name: "Deal 2: 1 Tikka Burger + 1 500ml Drink", price: 410 },
       { name: "Deal 3: 1 Zinger Burger + 1 500ml Drink", price: 460 },
       { name: "Deal 4: 1 Jalapeno Burger + 1 500ml Drink", price: 440 },
       { name: "Deal 5: 1 Chicken Burger + 1 500ml Drink + 1 Small Fries", price: 650 },
       { name: "Deal 6: 1 Zinger Burger + 1 Small Fries + 1 500ml Drink", price: 700 },
-    ],
-  },
-  {
-    category: "2 Person Deals",
-    items: [
+    ]),
+    ...d("2 Person", [
       { name: "Deal 1: 2 Shawarma Rolls + 1 500ml Drink", price: 500 },
       { name: "Deal 2: 2 Chicken Burgers + 1 500ml Drink", price: 720 },
       { name: "Deal 3: 2 Pratha Rolls + 1 500ml Drink", price: 720 },
       { name: "Deal 4: 1 Flaming Pasta Full + 1 500ml Drink", price: 780 },
       { name: "Deal 5: 4 Pc Behari Roll + 1 500ml Drink", price: 650 },
       { name: "Deal 6: 2 Zinger Burgers + 1 500ml Drink", price: 820 },
-    ],
-  },
-  {
-    category: "Family Deals",
-    items: [
+    ]),
+    ...d("Family", [
       { name: "Deal 1: 5 Zinger Burgers + 1500ml Drink", price: 1950 },
       { name: "Deal 2: 2 Small Tikka Pizzas + 4 Zinger Burgers + Large Fries + 1500ml Drink", price: 3050 },
       { name: "Deal 3: 1 Large Lazania Pizza + 2 Zinger Burgers + 2 Chicken Burgers + Large Fries + 2.25 Liter Drink", price: 3200 },
-    ],
-  },
-  {
-    category: "Student Deals",
-    items: [
+    ]),
+    ...d("Student", [
       { name: "Deal 1: 1 Small Pizza Kabab + 6 Pc Wings + 1 500ml Drink", price: 1080 },
       { name: "Deal 2: 1 Medium Pizza Kabab + 1 Liter Drink", price: 1450 },
       { name: "Deal 3: 1 Large Simple Malai Boti Pizza + 1 Liter Drink", price: 1550 },
-    ],
-  },
-];
+    ]),
+  ],
+};
 
 export const extras = [
   { name: "Dip Sauce", price: 60 },
@@ -370,3 +334,6 @@ export const extras = [
   { name: "Extra Bun", price: 50 },
   { name: "Extra Dip Sauce", price: 50 },
 ];
+
+// Backwards-compat re-export for any legacy import (DealsSection has been removed).
+export const dealCategories: { category: string; items: { name: string; price: number }[]; note?: string }[] = [];
