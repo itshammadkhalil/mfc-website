@@ -159,7 +159,7 @@ function PizzaTab({ filter, setFilter }: { filter: string; setFilter: (v: string
           <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
         ))}
       </ChipRow>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {items.map((item, i) => (
           <ItemCard
             key={(item.type ?? "") + item.name}
@@ -193,7 +193,7 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
         ))}
       </ChipRow>
       {note && <p className="mb-5 text-sm text-secondary font-medium italic">{note}</p>}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {items.map((deal) => (
           <DealCard
             key={deal.type + deal.name}
@@ -217,24 +217,25 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
 
 function DealCard({ deal, image, onAdd }: { deal: DealItem; image: string; onAdd: () => void }) {
   return (
-    <div className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
+    <div className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
       <CardImage image={image} alt={deal.name} />
-      <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-2 text-accent">
-          <Tag className="h-3.5 w-3.5" />
-          <span className="text-[10px] uppercase tracking-wider font-semibold">{deal.type}</span>
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
+        <div className="flex items-center gap-1.5 text-accent">
+          <Tag className="h-3 w-3" />
+          <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold truncate">{deal.type}</span>
         </div>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-foreground">{deal.name}</p>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="font-display text-2xl text-primary">{formatPKR(deal.price)}</span>
-          <Button size="sm" onClick={onAdd} className="bg-primary hover:bg-primary/90">
-            Add to Cart
+        <p className="mt-1.5 flex-1 text-xs sm:text-sm leading-snug text-foreground line-clamp-2">{deal.name}</p>
+        <div className="mt-3 flex items-center justify-between gap-2">
+          <span className="font-display text-lg sm:text-xl text-primary">{formatPKR(deal.price)}</span>
+          <Button size="sm" onClick={onAdd} className="h-8 px-2.5 text-xs bg-primary hover:bg-primary/90">
+            Add
           </Button>
         </div>
       </div>
     </div>
   );
 }
+
 
 // ---------- Search results ----------
 function SearchResults({
@@ -260,7 +261,7 @@ function SearchResults({
           <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
             <h3 className="font-display text-3xl sm:text-4xl text-foreground">Deals</h3>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {deals.map((d) => (
               <DealCard
                 key={d.type + d.name}
@@ -309,7 +310,7 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
         </p>
       )}
       {cat.note && <p className="text-xs text-muted-foreground mb-4 italic">{cat.note}</p>}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {cat.items.map((item) => (
           <ItemCard
             key={cat.category + item.name}
@@ -355,7 +356,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
   const [src, setSrc] = useState(image);
   const [didFallback, setDidFallback] = useState(false);
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+    <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden bg-muted">
       {!loaded && <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted via-muted/60 to-muted" />}
       <img
         src={src}
@@ -421,25 +422,25 @@ function ItemCard({
   };
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
+    <div className="group overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
       <CardImage image={image} alt={item.name} />
-      <div className="p-5">
-        <div className="flex items-start justify-between gap-3">
+      <div className="p-3 sm:p-4">
+        <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             {badge && (
-              <span className="inline-block mb-1 px-2 py-0.5 rounded-full bg-secondary/15 text-secondary text-[10px] font-bold uppercase tracking-wider">
+              <span className="inline-block mb-1 px-1.5 py-0.5 rounded-full bg-secondary/15 text-secondary text-[9px] font-bold uppercase tracking-wider">
                 {badge}
               </span>
             )}
-            <h4 className="font-semibold text-base text-foreground leading-snug">{item.name}</h4>
+            <h4 className="font-semibold text-sm sm:text-base text-foreground leading-snug line-clamp-2">{item.name}</h4>
           </div>
-          <span className="shrink-0 font-display text-xl text-primary">
+          <span className="shrink-0 font-display text-base sm:text-lg text-primary">
             {price != null ? formatPKR(price) : "—"}
           </span>
         </div>
 
         {hasOptions && (
-          <div className="mt-4 flex flex-wrap gap-1.5">
+          <div className="mt-2.5 flex flex-wrap gap-1">
             {item.sizes.map((s, i) => {
               const p = item.prices[i];
               if (p == null) return null;
@@ -448,7 +449,7 @@ function ItemCard({
                   key={s}
                   onClick={() => setSizeIdx(i)}
                   className={cn(
-                    "px-3 py-1 rounded-md text-xs font-medium border transition-colors",
+                    "px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-medium border transition-colors",
                     sizeIdx === i
                       ? "bg-secondary text-secondary-foreground border-secondary"
                       : "bg-background text-foreground/70 border-border hover:border-primary/40",
@@ -461,37 +462,38 @@ function ItemCard({
           </div>
         )}
 
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <div className="flex items-center rounded-lg border border-border">
+        <div className="mt-3 flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center rounded-md border border-border">
             <button
               onClick={() => setQty((q) => Math.max(1, q - 1))}
-              className="grid h-8 w-8 place-items-center text-muted-foreground hover:text-primary"
+              className="grid h-7 w-7 place-items-center text-muted-foreground hover:text-primary"
               aria-label="Decrease"
             >
-              <Minus className="h-3.5 w-3.5" />
+              <Minus className="h-3 w-3" />
             </button>
-            <span className="w-8 text-center text-sm font-semibold">{qty}</span>
+            <span className="w-6 text-center text-xs font-semibold">{qty}</span>
             <button
               onClick={() => setQty((q) => q + 1)}
-              className="grid h-8 w-8 place-items-center text-muted-foreground hover:text-primary"
+              className="grid h-7 w-7 place-items-center text-muted-foreground hover:text-primary"
               aria-label="Increase"
             >
-              <Plus className="h-3.5 w-3.5" />
+              <Plus className="h-3 w-3" />
             </button>
           </div>
           <Button
             onClick={onAdd}
             disabled={disabled}
             size="sm"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="h-8 px-2.5 text-xs bg-primary hover:bg-primary/90 text-primary-foreground"
           >
-            Add to Cart
+            Add
           </Button>
         </div>
       </div>
     </div>
   );
 }
+
 
 export function SectionHeader({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
