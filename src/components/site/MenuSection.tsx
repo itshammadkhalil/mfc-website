@@ -73,8 +73,8 @@ export function MenuSection() {
                 className="pl-9 bg-card"
               />
             </div>
-            <div className="relative -mx-1">
-              <div className="no-scrollbar flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 px-1 snap-x">
+            <div className="relative">
+              <div className="flex flex-wrap lg:flex-col gap-2 pb-1 lg:pb-0">
                 {TAB_ORDER.map((c) => (
                   <button
                     key={c}
