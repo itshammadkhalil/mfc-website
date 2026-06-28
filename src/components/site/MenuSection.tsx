@@ -348,7 +348,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
           setLoaded(true);
         }}
         className={cn(
-          "h-full w-full object-contain p-4 transition-all duration-500 group-hover:scale-105",
+          "h-full w-full object-contain p-3 transition-all duration-500 group-hover:scale-105",
           loaded ? "opacity-100" : "opacity-0",
         )}
       />
