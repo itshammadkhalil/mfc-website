@@ -1,5 +1,6 @@
 import { Clock, Facebook, Instagram, MapPin, Phone } from "lucide-react";
 import { restaurant } from "@/data/menu";
+import mfcLogo from "@/assets/mfc-logo.png";
 
 export function Footer() {
   return (
