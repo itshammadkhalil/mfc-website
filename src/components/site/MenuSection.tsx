@@ -316,7 +316,7 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
     <button
       onClick={onClick}
       className={cn(
-        "shrink-0 whitespace-nowrap px-3 py-1.5 sm:px-3.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all",
+        "whitespace-nowrap px-3 py-1.5 sm:px-3.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all",
         active
           ? "bg-secondary text-secondary-foreground border-secondary shadow-warm"
           : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
