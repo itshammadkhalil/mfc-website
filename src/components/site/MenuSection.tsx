@@ -73,8 +73,8 @@ export function MenuSection() {
                 className="pl-9 bg-card"
               />
             </div>
-            <div className="relative -mx-1">
-              <div className="no-scrollbar flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 px-1 snap-x">
+            <div className="relative">
+              <div className="flex flex-wrap lg:flex-col gap-2 pb-1 lg:pb-0">
                 {TAB_ORDER.map((c) => (
                   <button
                     key={c}
@@ -83,7 +83,7 @@ export function MenuSection() {
                       setActive(c);
                     }}
                     className={cn(
-                      "shrink-0 lg:shrink whitespace-nowrap snap-start text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
+                      "whitespace-nowrap text-left px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all border",
                       active === c && !searchActive
                         ? "bg-primary text-primary-foreground border-primary shadow-warm"
                         : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
@@ -303,11 +303,10 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
 // ---------- Shared image / chip ----------
 function ChipRow({ children }: { children: ReactNode }) {
   return (
-    <div className="relative -mx-4 sm:mx-0 mb-5">
-      <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 sm:px-0 sm:flex-wrap pb-1">
+    <div className="mb-5">
+      <div className="flex flex-wrap gap-2 pb-1">
         {children}
       </div>
-      <div className="pointer-events-none absolute top-0 right-0 h-full w-8 bg-gradient-to-l from-background to-transparent sm:hidden" />
     </div>
   );
 }
@@ -317,7 +316,7 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
     <button
       onClick={onClick}
       className={cn(
-        "shrink-0 whitespace-nowrap px-3 py-1.5 sm:px-3.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all",
+        "whitespace-nowrap px-3 py-1.5 sm:px-3.5 rounded-full text-[11px] sm:text-xs font-semibold border transition-all",
         active
           ? "bg-secondary text-secondary-foreground border-secondary shadow-warm"
           : "bg-card text-foreground/80 border-border hover:border-primary/40 hover:text-primary",
