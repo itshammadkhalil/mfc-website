@@ -1,4 +1,4 @@
-import { Clock, MapPin, Snowflake } from "lucide-react";
+import { ChefHat, Clock, Flame, Leaf, MapPin, ShieldCheck, Snowflake } from "lucide-react";
 import { restaurant } from "@/data/menu";
 
 export function About() {
@@ -29,15 +29,12 @@ export function About() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <Stat n="100%" l="Natural ingredients" />
-          <Stat n="FRESH" l="Cooked daily, never frozen" />
-          <Stat n="0" l="Preservatives added" />
-          <Stat n="MADE" l="To order, every time" />
-
-
+        <div className="grid grid-cols-2 gap-3">
+          <Promise icon={<Leaf className="h-4 w-4" />} text="100% Natural Ingredients" />
+          <Promise icon={<Flame className="h-4 w-4" />} text="Fresh, Never Frozen" />
+          <Promise icon={<ShieldCheck className="h-4 w-4" />} text="Zero Preservatives" />
+          <Promise icon={<ChefHat className="h-4 w-4" />} text="Made Fresh to Order" />
         </div>
-
       </div>
     </section>
   );
@@ -55,11 +52,11 @@ function Info({ icon, title, value }: { icon: React.ReactNode; title: string; va
   );
 }
 
-function Stat({ n, l }: { n: string; l: string }) {
+function Promise({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <div className="rounded-2xl border border-cream/10 bg-gradient-to-br from-cream/10 to-cream/0 p-6 text-center backdrop-blur">
-      <div className="font-display text-4xl sm:text-5xl text-gradient-warm">{n}</div>
-      <div className="mt-1 text-xs uppercase tracking-wider text-cream/70">{l}</div>
+    <div className="flex items-center gap-3 rounded-xl border border-cream/10 bg-gradient-to-br from-cream/10 to-cream/0 p-4 backdrop-blur">
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">{icon}</span>
+      <p className="text-sm text-cream font-medium leading-snug">{text}</p>
     </div>
   );
 }
