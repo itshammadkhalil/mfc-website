@@ -92,7 +92,7 @@ export function CheckoutDialog() {
 
   const reset = () => {
     setConfirmed(false);
-    setClosedNotice(false);
+    
     setForm({ name: "", phone: "", address: "", notes: "" });
     setErrors({});
     setCheckoutOpen(false);
