@@ -1,26 +1,10 @@
-import { useState } from "react";
 import { Leaf, Snowflake, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-option-b.jpg";
-import { isOpenNow, CLOSED_MESSAGE } from "@/lib/hours";
+import { isOpenNow } from "@/lib/hours";
 
 export function Hero() {
-  const [closedOpen, setClosedOpen] = useState(false);
   const open = isOpenNow();
-
-  const handleOrderClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!open) {
-      e.preventDefault();
-      setClosedOpen(true);
-    }
-  };
 
   return (
     <section id="home" className="relative isolate min-h-[100svh] flex items-center overflow-hidden">
@@ -61,7 +45,7 @@ export function Hero() {
               variant="outline"
               className="h-9 px-3.5 text-xs rounded-md border-cream/40 bg-background/10 text-cream hover:bg-cream hover:text-charcoal backdrop-blur"
             >
-              <a href="#deals" onClick={handleOrderClick}>Order Now</a>
+              <a href="#deals">Order Now</a>
             </Button>
           </div>
 
@@ -72,20 +56,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-
-      <Dialog open={closedOpen} onOpenChange={setClosedOpen}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl">We're Closed Right Now</DialogTitle>
-            <DialogDescription className="text-sm leading-relaxed pt-2">
-              {CLOSED_MESSAGE}
-            </DialogDescription>
-          </DialogHeader>
-          <Button onClick={() => setClosedOpen(false)} className="w-full bg-primary hover:bg-primary/90">
-            Okay, Got It
-          </Button>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }
