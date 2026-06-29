@@ -1,4 +1,5 @@
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { Minus, Moon, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -6,12 +7,30 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { restaurant } from "@/data/menu";
+import { isOpenNow, CLOSED_MESSAGE } from "@/lib/hours";
 
 export function CartDrawer() {
   const { isOpen, setOpen, lines, updateQty, removeItem, subtotal, deliveryCharge, total, setCheckoutOpen } = useCart();
+  const [closedNotice, setClosedNotice] = useState(false);
+
+  const handleProceed = () => {
+    if (!isOpenNow()) {
+      setClosedNotice(true);
+      return;
+    }
+    setOpen(false);
+    setCheckoutOpen(true);
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={setOpen}>
