@@ -22,9 +22,9 @@ export function About() {
             every dish is made fresh because that's the only way we know how to cook.
           </p>
           <div className="mt-8 grid sm:grid-cols-2 gap-3">
-            <Info icon={<MapPin className="h-4 w-4" />} title="Branch" value={restaurant.branch} />
             <Info icon={<Clock className="h-4 w-4" />} title="Opening Hours" value={restaurant.timing} />
             <Info icon={<Snowflake className="h-4 w-4" />} title="Indoor Dining" value="Air Conditioned Hall" />
+            <Info icon={<MapPin className="h-4 w-4" />} title="Branch" value={restaurant.branch} />
             <Info icon={<MapPin className="h-4 w-4" />} title="Delivery" value="Free within 3km · Outside city available" />
           </div>
         </div>
