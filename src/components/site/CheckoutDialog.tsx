@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle2, Moon, Phone } from "lucide-react";
+import { CheckCircle2, Phone } from "lucide-react";
 import {
   Dialog,
   DialogContent,
