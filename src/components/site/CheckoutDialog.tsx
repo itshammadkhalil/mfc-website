@@ -30,7 +30,6 @@ export function CheckoutDialog() {
   const { checkoutOpen, setCheckoutOpen, lines, subtotal, deliveryCharge, total, clear } = useCart();
   const [mode, setMode] = useState<Mode>("delivery");
   const [confirmed, setConfirmed] = useState(false);
-  const [closedNotice, setClosedNotice] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", address: "", notes: "" });
   const [errors, setErrors] = useState<{ name?: string; phone?: string; address?: string }>({});
 
