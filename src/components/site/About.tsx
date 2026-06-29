@@ -27,10 +27,11 @@ export function About() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Stat n="16 HRS" l="Daily service" />
-          <Stat n="100+" l="Menu items" />
-          <Stat n="6" l="Deal categories" />
-          <Stat n="0%" l="Delivery commission" />
+          <Stat n="22+" l="Pizza flavours" />
+          <Stat n="100+" l="Dishes to explore" />
+          <Stat n="FRESH" l="Made to order" />
+          <Stat n="5★" l="Customer rated" />
+
         </div>
 
       </div>
