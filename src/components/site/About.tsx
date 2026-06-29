@@ -8,15 +8,18 @@ export function About() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <div className="text-xs uppercase tracking-[0.3em] text-accent font-semibold">Our Story</div>
-          <h2 className="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl">Bold Flavours, <span className="text-gradient-warm">Family Roots</span></h2>
+          <h2 className="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl">Cooked with Love, <span className="text-gradient-warm">Served with Pride</span></h2>
           <p className="mt-6 text-cream/80 leading-relaxed">
-            MFC — Miran Jee Food Club is Jahanian's favourite spot for fresh, hand-crafted pizzas,
-            sizzling burgers, broast and pastas. Sit back in our spacious <strong className="text-cream">Air Conditioned hall</strong>,
-            or let us bring the feast to your doorstep.
+            MFC — Miran Jee Food Club began with a simple promise: feed Jahanian the way we'd
+            feed our own family — fresh, generous, and made with genuine care. Every pizza,
+            burger, and broast that leaves our kitchen carries that same promise, whether
+            you're dining in our <strong className="text-cream">air-conditioned hall</strong> or
+            welcoming us to your doorstep.
           </p>
           <p className="mt-3 text-cream/80 leading-relaxed">
-            From the wood-fired Mataka pizzas to our signature MFC 20-20 burger, every dish is
-            cooked to order with the same care since day one.
+            No shortcuts, no compromises — just real ingredients, cooked to order, the same way
+            since day one. From our wood-fired Mataka pizzas to the signature MFC 20-20 burger,
+            every dish is made fresh because that's the only way we know how to cook.
           </p>
           <div className="mt-8 grid sm:grid-cols-2 gap-3">
             <Info icon={<MapPin className="h-4 w-4" />} title="Branch" value={restaurant.branch} />
@@ -27,10 +30,11 @@ export function About() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <Stat n="22+" l="Pizza flavours" />
-          <Stat n="100+" l="Dishes to explore" />
-          <Stat n="FRESH" l="Made to order" />
-          <Stat n="5★" l="Customer rated" />
+          <Stat n="100%" l="Natural ingredients" />
+          <Stat n="FRESH" l="Cooked daily, never frozen" />
+          <Stat n="0" l="Preservatives added" />
+          <Stat n="MADE" l="To order, every time" />
+
 
         </div>
 
