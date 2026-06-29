@@ -1,26 +1,10 @@
-import { useState } from "react";
 import { Leaf, Snowflake, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-option-b.jpg";
-import { isOpenNow, CLOSED_MESSAGE } from "@/lib/hours";
+import { isOpenNow } from "@/lib/hours";
 
 export function Hero() {
-  const [closedOpen, setClosedOpen] = useState(false);
   const open = isOpenNow();
-
-  const handleOrderClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!open) {
-      e.preventDefault();
-      setClosedOpen(true);
-    }
-  };
 
   return (
     <section id="home" className="relative isolate min-h-[100svh] flex items-center overflow-hidden">
