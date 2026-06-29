@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, ShoppingCart, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart-context";
@@ -14,16 +14,26 @@ const links = [
   { href: "#contact", label: "Contact" },
 ];
 
-const NAV_BG = "#1A1410";
-
 export function Navbar() {
   const { itemCount, setOpen } = useCart();
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-40 border-b border-white/10 shadow-md"
-      style={{ backgroundColor: NAV_BG }}
+      className={cn(
+        "fixed inset-x-0 top-0 z-40 transition-all duration-300",
+        scrolled
+          ? "bg-background/95 backdrop-blur border-b border-border shadow-md"
+          : "bg-transparent border-b border-transparent",
+      )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 sm:h-24 items-center justify-between gap-4">
@@ -36,10 +46,20 @@ export function Navbar() {
               decoding="async"
             />
             <div className="hidden sm:block min-w-0">
-              <div className="font-display text-lg leading-none truncate text-cream">
+              <div
+                className={cn(
+                  "font-display text-lg leading-none truncate transition-colors duration-300",
+                  scrolled ? "text-foreground" : "text-cream",
+                )}
+              >
                 Miran Jee
               </div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-cream/70">
+              <div
+                className={cn(
+                  "text-[10px] uppercase tracking-[0.2em] transition-colors duration-300",
+                  scrolled ? "text-muted-foreground" : "text-cream/70",
+                )}
+              >
                 Food Club
               </div>
             </div>
@@ -50,7 +70,10 @@ export function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                className="px-3 py-2 text-sm font-medium text-cream/90 hover:text-primary transition-colors relative group"
+                className={cn(
+                  "px-3 py-2 text-sm font-medium hover:text-primary transition-colors relative group",
+                  scrolled ? "text-foreground/80" : "text-cream/90",
+                )}
               >
                 {l.label}
                 <span className="absolute inset-x-3 -bottom-0.5 h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
@@ -63,12 +86,17 @@ export function Navbar() {
               variant="outline"
               size="icon"
               onClick={() => setOpen(true)}
-              className="relative border-transparent bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+              className={cn(
+                "relative transition-colors duration-300",
+                scrolled
+                  ? "border-primary/30 hover:bg-primary/10 text-foreground"
+                  : "border-cream/30 bg-cream/10 text-cream hover:bg-cream/20 hover:text-cream backdrop-blur",
+              )}
               aria-label="Open cart"
             >
               <ShoppingCart className="h-4 w-4" />
               {itemCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-accent-foreground shadow">
+                <span className="absolute -top-1.5 -right-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground shadow">
                   {itemCount}
                 </span>
               )}
@@ -77,7 +105,8 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               className={cn(
-                "lg:hidden text-cream hover:bg-cream/10 hover:text-cream",
+                "lg:hidden transition-colors duration-300",
+                scrolled ? "text-foreground" : "text-cream hover:bg-cream/10 hover:text-cream",
               )}
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
@@ -89,16 +118,13 @@ export function Navbar() {
 
         {mobileOpen && (
           <div className="lg:hidden pb-4 animate-fade-up">
-            <nav
-              className="flex flex-col gap-1 rounded-xl border border-white/10 p-2"
-              style={{ backgroundColor: NAV_BG }}
-            >
+            <nav className="flex flex-col gap-1 rounded-xl border border-border bg-card p-2">
               {links.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-cream/90 hover:bg-primary/15 hover:text-primary"
+                  className="rounded-md px-3 py-2 text-sm font-medium hover:bg-primary/10 hover:text-primary"
                 >
                   {l.label}
                 </a>
