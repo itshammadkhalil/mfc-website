@@ -5,4 +5,4 @@ export function isOpenNow(date: Date = new Date()): boolean {
 }
 
 export const CLOSED_MESSAGE =
-  "We're closed right now 😴 Thank you for choosing MFC! Our kitchen is open daily from 10:00 AM to 2:00 AM — come back during these hours and we'd love to serve you. See you soon!";
+  "Thank you for choosing MFC! Our kitchen is open daily from 10:00 AM to 2:00 AM — come back during these hours and we'd love to serve you. See you soon!";
