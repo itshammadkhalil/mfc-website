@@ -45,7 +45,7 @@ export function Hero() {
               variant="outline"
               className="h-9 px-3.5 text-xs rounded-md border-cream/40 bg-background/10 text-cream hover:bg-cream hover:text-charcoal backdrop-blur"
             >
-              <a href="#deals" onClick={handleOrderClick}>Order Now</a>
+              <a href="#deals">Order Now</a>
             </Button>
           </div>
 
@@ -56,20 +56,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-
-      <Dialog open={closedOpen} onOpenChange={setClosedOpen}>
-        <DialogContent className="max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl">We're Closed Right Now</DialogTitle>
-            <DialogDescription className="text-sm leading-relaxed pt-2">
-              {CLOSED_MESSAGE}
-            </DialogDescription>
-          </DialogHeader>
-          <Button onClick={() => setClosedOpen(false)} className="w-full bg-primary hover:bg-primary/90">
-            Okay, Got It
-          </Button>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }
