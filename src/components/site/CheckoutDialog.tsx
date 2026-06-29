@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useCart, formatPKR } from "@/lib/cart-context";
 import { restaurant } from "@/data/menu";
-import { isOpenNow, CLOSED_MESSAGE } from "@/lib/hours";
+
 import { cn } from "@/lib/utils";
 
 type Mode = "delivery" | "takeaway" | "dinein";
