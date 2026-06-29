@@ -111,22 +111,7 @@ export function CheckoutDialog() {
       }}
     >
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-        {closedNotice ? (
-          <div className="text-center py-4">
-            <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
-              <Moon className="h-9 w-9 text-primary" />
-            </div>
-            <DialogHeader className="mt-4">
-              <DialogTitle className="font-display text-2xl text-center">We're Closed Right Now</DialogTitle>
-              <DialogDescription className="text-center text-sm leading-relaxed pt-2">
-                {CLOSED_MESSAGE}
-              </DialogDescription>
-            </DialogHeader>
-            <Button onClick={reset} className="mt-6 w-full bg-primary hover:bg-primary/90">
-              Okay, Got It
-            </Button>
-          </div>
-        ) : confirmed ? (
+        {confirmed ? (
           <div className="text-center py-4">
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
               <CheckCircle2 className="h-9 w-9 text-primary" />
