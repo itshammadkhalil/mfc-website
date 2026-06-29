@@ -106,10 +106,7 @@ export function CartDrawer() {
               )}
               <Button
                 className="w-full mt-3 h-11 bg-primary hover:bg-primary/90"
-                onClick={() => {
-                  setOpen(false);
-                  setCheckoutOpen(true);
-                }}
+                onClick={handleProceed}
               >
                 Proceed to Checkout
               </Button>
@@ -117,6 +114,23 @@ export function CartDrawer() {
           </>
         )}
       </SheetContent>
+
+      <Dialog open={closedNotice} onOpenChange={setClosedNotice}>
+        <DialogContent className="max-w-sm">
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
+            <Moon className="h-9 w-9 text-primary" />
+          </div>
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl text-center">We're Closed Right Now</DialogTitle>
+            <DialogDescription className="text-center text-sm leading-relaxed pt-2">
+              {CLOSED_MESSAGE}
+            </DialogDescription>
+          </DialogHeader>
+          <Button onClick={() => setClosedNotice(false)} className="w-full bg-primary hover:bg-primary/90">
+            Okay, Got It
+          </Button>
+        </DialogContent>
+      </Dialog>
     </Sheet>
   );
 }
