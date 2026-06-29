@@ -24,13 +24,13 @@ export function About() {
           <div className="mt-8 grid sm:grid-cols-2 gap-3">
             <Info icon={<Clock className="h-4 w-4" />} title="Opening Hours" value={restaurant.timing} />
             <Info icon={<Snowflake className="h-4 w-4" />} title="Indoor Dining" value="Air Conditioned Hall" />
-            <Info icon={<MapPin className="h-4 w-4" />} title="Branch" value={restaurant.branch} />
             <Info icon={<MapPin className="h-4 w-4" />} title="Delivery" value="Free within 3km · Outside city available" />
+            <Info icon={<MapPin className="h-4 w-4" />} title="Branch" value={restaurant.branch} />
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <Promise icon={<Leaf className="h-4 w-4" />} text="100% Natural Ingredients" />
+          <Promise icon={<Leaf className="h-4 w-4" />} text="Natural Ingredients" />
           <Promise icon={<Flame className="h-4 w-4" />} text="Fresh, Never Frozen" />
           <Promise icon={<ShieldCheck className="h-4 w-4" />} text="Zero Preservatives" />
           <Promise icon={<ChefHat className="h-4 w-4" />} text="Made Fresh to Order" />
