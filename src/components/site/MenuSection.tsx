@@ -222,7 +222,7 @@ function DealCard({ deal, image, onAdd }: { deal: DealItem; image: string; onAdd
           <Tag className="h-3 w-3" />
           <span className="text-[9px] sm:text-[10px] uppercase tracking-wider font-semibold truncate">{deal.type}</span>
         </div>
-        <p className="mt-1.5 flex-1 text-xs sm:text-sm leading-snug text-foreground line-clamp-2">{deal.name}</p>
+        <p className="mt-1.5 flex-1 text-xs sm:text-sm leading-snug text-foreground">{deal.name}</p>
         <div className="mt-3 flex items-center justify-between gap-2">
           <span className="font-display text-lg sm:text-xl text-primary">{formatPKR(deal.price)}</span>
           <Button size="sm" onClick={onAdd} className="h-8 px-2.5 text-xs bg-primary hover:bg-primary/90">
