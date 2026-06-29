@@ -76,10 +76,6 @@ export function CheckoutDialog() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isOpenNow()) {
-      setClosedNotice(true);
-      return;
-    }
     const newErrors: typeof errors = {};
     if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.phone.trim()) newErrors.phone = "Phone number is required";
