@@ -175,15 +175,21 @@ function PizzaTab(_: { filter: string; setFilter: (v: string) => void }) {
 // ---------- Deals tab ----------
 const DEAL_CHIPS = ["All", "Pizza Deals", "Lunch & Midnight", "1 Person", "2 Person", "Family", "Student"];
 
-function DealsTab(_: { filter: string; setFilter: (v: string) => void }) {
+function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string) => void }) {
   const { addItem } = useCart();
-  const items = dealsGroup.items;
+  const allItems = dealsGroup.items;
+  const items = filter === "All" ? allItems : allItems.filter((d) => d.type === filter);
   const icon = getCategoryIcon("Deals");
   return (
     <div className="animate-fade-up">
       <div className="flex items-end justify-between border-b border-border pb-3 mb-6">
         <h3 className="font-display text-3xl sm:text-4xl text-foreground">Deals & Offers</h3>
       </div>
+      <ChipRow>
+        {DEAL_CHIPS.map((c) => (
+          <FilterChip key={c} label={c} active={filter === c} onClick={() => setFilter(c)} />
+        ))}
+      </ChipRow>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
         {items.map((deal) => (
           <DealCard
@@ -205,6 +211,7 @@ function DealsTab(_: { filter: string; setFilter: (v: string) => void }) {
     </div>
   );
 }
+
 
 function DealCard({ deal, image, onAdd }: { deal: DealItem; image: string; onAdd: () => void }) {
   return (
