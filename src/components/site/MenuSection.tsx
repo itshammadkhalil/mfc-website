@@ -165,6 +165,7 @@ function PizzaTab(_: { filter: string; setFilter: (v: string) => void }) {
             item={item}
             image={getPizzaImage(i)}
             badge={item.type}
+            eager={i < 4}
           />
         ))}
       </div>
