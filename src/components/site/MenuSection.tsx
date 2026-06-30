@@ -404,11 +404,13 @@ function ItemCard({
   item,
   image,
   badge,
+  eager = false,
 }: {
   category: string;
   item: MenuItem;
   image: string;
   badge?: string;
+  eager?: boolean;
 }) {
   const validIndices = item.prices.map((p, i) => (p == null ? -1 : i)).filter((i) => i >= 0);
   const initial = validIndices[0] ?? 0;
