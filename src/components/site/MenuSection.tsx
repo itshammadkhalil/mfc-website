@@ -192,11 +192,12 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
         ))}
       </ChipRow>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-        {items.map((deal) => (
+        {items.map((deal, i) => (
           <DealCard
             key={deal.type + deal.name}
             deal={deal}
             image={icon}
+            eager={i < 4}
             onAdd={() => {
               addItem({
                 id: `deal::${deal.type}::${deal.name}`,
