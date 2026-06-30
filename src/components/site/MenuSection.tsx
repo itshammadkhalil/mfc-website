@@ -214,10 +214,10 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
 }
 
 
-function DealCard({ deal, image, onAdd }: { deal: DealItem; image: string; onAdd: () => void }) {
+function DealCard({ deal, image, onAdd, eager = false }: { deal: DealItem; image: string; onAdd: () => void; eager?: boolean }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
-      <CardImage image={image} alt={deal.name} />
+      <CardImage image={image} alt={deal.name} eager={eager} />
       <div className="flex flex-1 flex-col p-3 sm:p-4">
         <div className="flex items-center gap-1.5 text-accent">
           <Tag className="h-3 w-3" />
