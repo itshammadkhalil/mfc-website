@@ -1,7 +1,6 @@
 // Photorealistic food photography per category.
+// One shared image per category — maximum browser cache reuse, minimum requests.
 import pizza1 from "@/assets/menu/pizza-1.jpg";
-import pizza2 from "@/assets/menu/pizza-2.jpg";
-import pizza3 from "@/assets/menu/pizza-3.jpg";
 import burgers from "@/assets/menu/burgers.jpg";
 import fries from "@/assets/menu/fries.jpg";
 import rolls from "@/assets/menu/rolls.jpg";
@@ -16,8 +15,6 @@ import margarita from "@/assets/menu/margarita.jpg";
 import cake from "@/assets/menu/cake.jpg";
 import drinks from "@/assets/menu/drinks.jpg";
 import deals from "@/assets/menu/deals.jpg";
-
-const PIZZA_POOL = [pizza1, pizza2, pizza3];
 
 const BY_CATEGORY: Record<string, string> = {
   Pizza: pizza1,
@@ -43,6 +40,7 @@ export function getCategoryIcon(category: string): string {
   return BY_CATEGORY[category] ?? FALLBACK_IMAGE;
 }
 
-export function getPizzaImage(index: number): string {
-  return PIZZA_POOL[index % PIZZA_POOL.length];
+// Kept for API stability; all pizza items now share one cached image.
+export function getPizzaImage(_index: number): string {
+  return pizza1;
 }
