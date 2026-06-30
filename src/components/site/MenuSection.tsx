@@ -310,12 +310,13 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
       )}
       {cat.note && <p className="text-xs text-muted-foreground mb-4 italic">{cat.note}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-        {cat.items.map((item) => (
+        {cat.items.map((item, i) => (
           <ItemCard
             key={cat.category + item.name}
             category={cat.category}
             item={item}
             image={icon}
+            eager={i < 4}
           />
         ))}
       </div>
