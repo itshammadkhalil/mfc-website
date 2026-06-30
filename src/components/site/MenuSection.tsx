@@ -349,17 +349,36 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
   );
 }
 
-function CardImage({ image, alt }: { image: string; alt: string }) {
-  const [loaded, setLoaded] = useState(false);
+function CardImage({ image, alt, eager = false }: { image: string; alt: string; eager?: boolean }) {
+  const imgRef = useRef<HTMLImageElement>(null);
+  // If the browser already has the image cached, render fully loaded on first paint —
+  // no skeleton flash, no opacity flicker.
+  const [loaded, setLoaded] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const probe = new Image();
+    probe.src = image;
+    return probe.complete && probe.naturalWidth > 0;
+  });
   const [src, setSrc] = useState(image);
   const [didFallback, setDidFallback] = useState(false);
+
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, []);
+
   return (
     <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden bg-muted">
-      {!loaded && <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted via-muted/60 to-muted" />}
+      {!loaded && (
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted via-muted/60 to-muted" />
+      )}
       <img
+        ref={imgRef}
         src={src}
         alt={alt}
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
+        fetchPriority={eager ? "high" : "auto"}
         decoding="async"
         width={1024}
         height={768}
@@ -371,7 +390,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
           setLoaded(true);
         }}
         className={cn(
-          "h-full w-full object-cover transition-all duration-500 group-hover:scale-105",
+          "h-full w-full object-cover transition-opacity duration-300 group-hover:scale-105",
           loaded ? "opacity-100" : "opacity-0",
         )}
       />
