@@ -165,6 +165,7 @@ function PizzaTab(_: { filter: string; setFilter: (v: string) => void }) {
             item={item}
             image={getPizzaImage(i)}
             badge={item.type}
+            eager={i < 4}
           />
         ))}
       </div>
@@ -191,11 +192,12 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
         ))}
       </ChipRow>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-        {items.map((deal) => (
+        {items.map((deal, i) => (
           <DealCard
             key={deal.type + deal.name}
             deal={deal}
             image={icon}
+            eager={i < 4}
             onAdd={() => {
               addItem({
                 id: `deal::${deal.type}::${deal.name}`,
@@ -213,10 +215,10 @@ function DealsTab({ filter, setFilter }: { filter: string; setFilter: (v: string
 }
 
 
-function DealCard({ deal, image, onAdd }: { deal: DealItem; image: string; onAdd: () => void }) {
+function DealCard({ deal, image, onAdd, eager = false }: { deal: DealItem; image: string; onAdd: () => void; eager?: boolean }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
-      <CardImage image={image} alt={deal.name} />
+      <CardImage image={image} alt={deal.name} eager={eager} />
       <div className="flex flex-1 flex-col p-3 sm:p-4">
         <div className="flex items-center gap-1.5 text-accent">
           <Tag className="h-3 w-3" />
@@ -309,12 +311,13 @@ function CategoryBlock({ cat }: { cat: MenuCategory }) {
       )}
       {cat.note && <p className="text-xs text-muted-foreground mb-4 italic">{cat.note}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-        {cat.items.map((item) => (
+        {cat.items.map((item, i) => (
           <ItemCard
             key={cat.category + item.name}
             category={cat.category}
             item={item}
             image={icon}
+            eager={i < 4}
           />
         ))}
       </div>
@@ -349,17 +352,36 @@ function FilterChip({ label, active, onClick }: { label: string; active: boolean
   );
 }
 
-function CardImage({ image, alt }: { image: string; alt: string }) {
-  const [loaded, setLoaded] = useState(false);
+function CardImage({ image, alt, eager = false }: { image: string; alt: string; eager?: boolean }) {
+  const imgRef = useRef<HTMLImageElement>(null);
+  // If the browser already has the image cached, render fully loaded on first paint —
+  // no skeleton flash, no opacity flicker.
+  const [loaded, setLoaded] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const probe = new Image();
+    probe.src = image;
+    return probe.complete && probe.naturalWidth > 0;
+  });
   const [src, setSrc] = useState(image);
   const [didFallback, setDidFallback] = useState(false);
+
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, []);
+
   return (
     <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden bg-muted">
-      {!loaded && <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted via-muted/60 to-muted" />}
+      {!loaded && (
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted via-muted/60 to-muted" />
+      )}
       <img
+        ref={imgRef}
         src={src}
         alt={alt}
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
+        fetchPriority={eager ? "high" : "auto"}
         decoding="async"
         width={1024}
         height={768}
@@ -371,7 +393,7 @@ function CardImage({ image, alt }: { image: string; alt: string }) {
           setLoaded(true);
         }}
         className={cn(
-          "h-full w-full object-cover transition-all duration-500 group-hover:scale-105",
+          "h-full w-full object-cover transition-opacity duration-300 group-hover:scale-105",
           loaded ? "opacity-100" : "opacity-0",
         )}
       />
@@ -385,11 +407,13 @@ function ItemCard({
   item,
   image,
   badge,
+  eager = false,
 }: {
   category: string;
   item: MenuItem;
   image: string;
   badge?: string;
+  eager?: boolean;
 }) {
   const validIndices = item.prices.map((p, i) => (p == null ? -1 : i)).filter((i) => i >= 0);
   const initial = validIndices[0] ?? 0;
@@ -431,7 +455,7 @@ function ItemCard({
   return (
     <>
       <div className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
-        <CardImage image={image} alt={item.name} />
+        <CardImage image={image} alt={item.name} eager={eager} />
         <div className="flex flex-1 flex-col p-3 sm:p-4">
           {badge && (
             <span className="inline-block self-start mb-1 px-1.5 py-0.5 rounded-full bg-secondary/15 text-secondary text-[9px] font-bold uppercase tracking-wider">
