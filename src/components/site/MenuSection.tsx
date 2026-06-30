@@ -452,7 +452,7 @@ function ItemCard({
   return (
     <>
       <div className="group flex flex-col overflow-hidden rounded-xl sm:rounded-2xl border border-border bg-card transition-all hover:border-primary/40 hover:shadow-warm hover:-translate-y-0.5">
-        <CardImage image={image} alt={item.name} />
+        <CardImage image={image} alt={item.name} eager={eager} />
         <div className="flex flex-1 flex-col p-3 sm:p-4">
           {badge && (
             <span className="inline-block self-start mb-1 px-1.5 py-0.5 rounded-full bg-secondary/15 text-secondary text-[9px] font-bold uppercase tracking-wider">
