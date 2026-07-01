@@ -1,10 +1,29 @@
-import { Leaf, Snowflake, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Leaf, Moon, Snowflake, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-option-b.jpg";
-import { isOpenNow } from "@/lib/hours";
+import { isOpenNow, CLOSED_MESSAGE } from "@/lib/hours";
+
+const WHATSAPP_URL =
+  "https://wa.me/923097000178?text=Hi%20MFC!%20I%27d%20like%20to%20place%20an%20order%20%F0%9F%8D%95";
 
 export function Hero() {
   const open = isOpenNow();
+  const [closedNotice, setClosedNotice] = useState(false);
+
+  const handleWhatsApp = (e: React.MouseEvent) => {
+    if (!isOpenNow()) {
+      e.preventDefault();
+      setClosedNotice(true);
+    }
+  };
 
   return (
     <section id="home" className="relative isolate min-h-[100svh] flex items-center overflow-hidden">
@@ -45,7 +64,14 @@ export function Hero() {
               variant="outline"
               className="h-9 px-3.5 text-xs rounded-md border-cream/40 bg-background/10 text-cream hover:bg-cream hover:text-charcoal backdrop-blur"
             >
-              <a href="#deals">Order Now</a>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleWhatsApp}
+              >
+                💬 WhatsApp Us
+              </a>
             </Button>
           </div>
 
@@ -56,6 +82,23 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <Dialog open={closedNotice} onOpenChange={setClosedNotice}>
+        <DialogContent className="max-w-sm">
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
+            <Moon className="h-9 w-9 text-primary" />
+          </div>
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl text-center">We're Closed Right Now</DialogTitle>
+            <DialogDescription className="text-center text-sm leading-relaxed pt-2">
+              {CLOSED_MESSAGE}
+            </DialogDescription>
+          </DialogHeader>
+          <Button onClick={() => setClosedNotice(false)} className="w-full bg-primary hover:bg-primary/90">
+            Okay, Got It
+          </Button>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
