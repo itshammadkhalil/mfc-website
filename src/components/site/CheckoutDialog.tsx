@@ -123,7 +123,22 @@ export function CheckoutDialog() {
         if (!v) reset();
       }}
     >
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className={cn(
+          "p-0 gap-0 overflow-hidden",
+          // Mobile: bottom sheet
+          "max-sm:top-auto max-sm:bottom-0 max-sm:left-0 max-sm:right-0",
+          "max-sm:translate-x-0 max-sm:translate-y-0",
+          "max-sm:w-full max-sm:max-w-full max-sm:rounded-t-2xl max-sm:rounded-b-none max-sm:border-b-0",
+          "max-sm:h-[90vh] max-sm:max-h-[90vh]",
+          // Desktop: centered modal
+          "sm:max-w-[500px] sm:w-[calc(100vw-2rem)] sm:max-h-[90vh] sm:rounded-2xl",
+          "flex flex-col",
+        )}
+      >
+        {/* Mobile drag handle */}
+        <div className="sm:hidden mx-auto mt-2 h-1.5 w-12 rounded-full bg-muted shrink-0" />
+
         {confirmed ? (
           <div className="text-center py-4">
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
