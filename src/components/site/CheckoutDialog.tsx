@@ -140,7 +140,7 @@ export function CheckoutDialog() {
         <div className="sm:hidden mx-auto mt-2 h-1.5 w-12 rounded-full bg-muted shrink-0" />
 
         {confirmed ? (
-          <div className="text-center py-4">
+          <div className="text-center p-6 overflow-y-auto">
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-primary/15">
               <CheckCircle2 className="h-9 w-9 text-primary" />
             </div>
@@ -169,17 +169,17 @@ export function CheckoutDialog() {
             </Button>
           </div>
         ) : (
-          <>
-            <DialogHeader>
+          <form onSubmit={handleSubmit} className="flex flex-col min-h-0 flex-1">
+            <DialogHeader className="px-5 pt-5 pb-3 shrink-0 border-b">
               <DialogTitle className="font-display text-2xl">Checkout</DialogTitle>
               <DialogDescription>Complete your order details below.</DialogDescription>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5 py-4 space-y-6">
               {/* Order Type */}
-              <div>
+              <div className="w-full">
                 <SectionLabel>Order Type</SectionLabel>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-3 gap-2 w-full">
                   {(["delivery", "takeaway", "dinein"] as const).map((m) => {
                     const active = mode === m;
                     return (
@@ -188,14 +188,19 @@ export function CheckoutDialog() {
                         type="button"
                         onClick={() => setMode(m)}
                         className={cn(
-                          "flex-1 min-w-[90px] flex flex-col items-center justify-center gap-1 rounded-xl border-2 px-2 py-3 transition-all",
+                          "min-w-0 flex flex-col items-center justify-center gap-1 rounded-xl border-2 px-1 py-3 transition-all text-center",
                           active
-                            ? "border-primary bg-primary/10 shadow-sm scale-[1.03] text-foreground"
+                            ? "border-primary bg-primary/10 shadow-sm text-foreground"
                             : "border-border bg-muted/30 text-muted-foreground hover:border-primary/40 hover:bg-muted/60",
                         )}
                       >
-                        <span className="text-2xl leading-none">{MODE_EMOJI[m]}</span>
-                        <span className={cn("text-xs font-semibold", active && "text-primary")}>
+                        <span className="text-xl leading-none">{MODE_EMOJI[m]}</span>
+                        <span
+                          className={cn(
+                            "text-[11px] font-semibold leading-tight break-words",
+                            active && "text-primary",
+                          )}
+                        >
                           {MODE_LABEL[m]}
                         </span>
                       </button>
@@ -205,7 +210,7 @@ export function CheckoutDialog() {
               </div>
 
               {/* Your Details */}
-              <div>
+              <div className="w-full">
                 <SectionLabel>Your Details</SectionLabel>
                 <div className="space-y-3">
                   <div>
@@ -215,6 +220,7 @@ export function CheckoutDialog() {
                       placeholder="Your full name"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full"
                     />
                     {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
                   </div>
@@ -226,6 +232,7 @@ export function CheckoutDialog() {
                       placeholder="03XX-XXXXXXX"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      className="w-full"
                     />
                     {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
                   </div>
@@ -233,7 +240,7 @@ export function CheckoutDialog() {
               </div>
 
               {/* Order Details */}
-              <div>
+              <div className="w-full">
                 <SectionLabel>Order Details</SectionLabel>
                 <div className="space-y-3">
                   {mode === "delivery" && (
@@ -245,6 +252,7 @@ export function CheckoutDialog() {
                         placeholder="House #, Street, Area..."
                         value={form.address}
                         onChange={(e) => setForm({ ...form, address: e.target.value })}
+                        className="w-full"
                       />
                       {errors.address && (
                         <p className="text-xs text-destructive mt-1">{errors.address}</p>
@@ -262,23 +270,24 @@ export function CheckoutDialog() {
                       placeholder="Any special requests? (e.g. extra spicy, no onions...)"
                       value={form.notes}
                       onChange={(e) => setForm({ ...form, notes: e.target.value })}
+                      className="w-full"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Order Summary */}
-              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm shadow-sm">
-                <p className="font-semibold mb-2 flex items-center justify-between">
+              <div className="w-full rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm shadow-sm">
+                <p className="font-semibold mb-2 flex items-center justify-between gap-2">
                   <span>Order Summary</span>
-                  <span className="text-[10px] uppercase tracking-wider text-primary font-bold">
+                  <span className="text-[10px] uppercase tracking-wider text-primary font-bold shrink-0">
                     Final
                   </span>
                 </p>
                 <div className="space-y-1 max-h-32 overflow-y-auto">
                   {lines.map((l) => (
-                    <div key={l.id} className="flex justify-between text-xs">
-                      <span className="truncate pr-2">
+                    <div key={l.id} className="flex justify-between gap-2 text-xs">
+                      <span className="truncate min-w-0">
                         {l.quantity}× {l.name}
                         {l.size ? ` (${l.size})` : ""}
                       </span>
@@ -303,7 +312,9 @@ export function CheckoutDialog() {
                   </div>
                 </div>
               </div>
+            </div>
 
+            <div className="shrink-0 border-t bg-background px-5 py-3">
               <Button
                 type="submit"
                 disabled={lines.length === 0}
@@ -312,10 +323,11 @@ export function CheckoutDialog() {
                 <WhatsAppIcon className="h-5 w-5" />
                 Place Order via WhatsApp
               </Button>
-            </form>
-          </>
+            </div>
+          </form>
         )}
       </DialogContent>
+
     </Dialog>
   );
 }
