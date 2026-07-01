@@ -64,7 +64,14 @@ export function Hero() {
               variant="outline"
               className="h-9 px-3.5 text-xs rounded-md border-cream/40 bg-background/10 text-cream hover:bg-cream hover:text-charcoal backdrop-blur"
             >
-              <a href="#deals">Order Now</a>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleWhatsApp}
+              >
+                💬 WhatsApp Us
+              </a>
             </Button>
           </div>
 
